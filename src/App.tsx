@@ -1,11 +1,15 @@
 import React from "react";
 import { Box, ChakraProvider } from "@chakra-ui/react";
+import ErrorBoundary from "./components/ErrorBoundary";
+import MainLayout from "./components/MainLayout";
 
 const App: React.FC = () => {
   return (
-    <ChakraProvider>
-      <Box>Custom Code Snippets</Box>
-    </ChakraProvider>
+    <ErrorBoundary>
+      <ChakraProvider>
+        <MainLayout />
+      </ChakraProvider>
+    </ErrorBoundary>
   );
 };
 
