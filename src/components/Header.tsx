@@ -10,6 +10,7 @@ import {
   Tooltip
 } from "@chakra-ui/react";
 import { __ } from "@wordpress/i18n";
+import Menus from "./Menus";
 
 const Header = () => {
   return (
@@ -35,6 +36,7 @@ const Header = () => {
             <Heading fontWeight="600" size="16px" lineHeight="24px">
               {__("Custom Code Snippets", "custom-code-snippets")}
             </Heading>
+			<Menus />
           </HStack>
         </Box>
       </Stack>
