@@ -1,10 +1,10 @@
 <?php
 /**
  * Plugin Name: Custom Code Snippets
- * Plugin URI: https://milanc.com.np/custom-code-snippets
+ * Plugin URI: https://wordpress.org/plugins/custom-code-snippets
  * Description: Effortlessly user can add the block of code to code file.
  * Version: 1.0.0
- * Author: Milan
+ * Author: CCSNPT@Milan
  * Author URI: https://milanc.com.np/
  * Text Domain: custom-code-snippets
  * Domain Path: /languages/
@@ -15,6 +15,8 @@
  *
  * @package CustomCodeSnippets
  */
+
+use CCSNPT\Migration\Migration;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -52,3 +54,11 @@ if ( ! defined( 'CCSNPT_URL' ) ) {
  * Initialization of CCSNPT.
  */
 add_action( 'plugin_loaded', array( 'CCSNPT\CCSNPT', 'get_instance' ) );
+
+/**
+ * Register activation hook.
+ */
+register_activation_hook(__FILE__, function() {
+    $migration = new Migration();
+    $migration->setup();
+});

@@ -2,9 +2,10 @@
 /**
  *  Menus class.
  *
- * @package  namespace CCSNPT\Menus
- *
  * @since 1.0.0
+ * @package CCSNPT\Menus
+ * @category Menu
+ * @author CCSNPT@Milan
  */
 
 namespace CCSNPT\Menus;

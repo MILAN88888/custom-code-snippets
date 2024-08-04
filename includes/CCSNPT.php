@@ -5,11 +5,14 @@
  * @since 1.0.0
  *
  * @package CCSNPT
+ * @category Main Class.
+ * @author CCSNPT@Milan.
  */
 
  namespace CCSNPT;
 
  use CCSNPT\Menus\Menus as Menus;
+use CCSNPT\Migration\Migration;
 
  /**
   * CSSNTP setup.
@@ -87,6 +90,7 @@ class CCSNPT {
 
 		return (array) $plugin_meta;
 	}
+
 	/**
 	 * Func to load the files.
 	 *
@@ -94,6 +98,6 @@ class CCSNPT {
 	 * @return void
 	 */
 	private function includes() {
-		new Menus();
+			new Menus();
 	}
 }
