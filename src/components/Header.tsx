@@ -25,9 +25,10 @@ const Header = () => {
               left="1.95px"
             />
             <Heading
-              fontWeight="600"
-              size="16px"
-              lineHeight="24px"
+               fontWeight="600"
+			   size="20px"
+			   lineHeight="8px"
+			   color="dark.500"
               letterSpacing="0.5px"
             >
               {__("Custom Code Snippets", "custom-code-snippets")}

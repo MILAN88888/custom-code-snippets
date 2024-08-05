@@ -24,7 +24,7 @@ const Menus: React.FC = () => {
           key={menu.route}
           style={({ isActive }: any) => ({
             fontWeight: isActive ? "bold" : "normal",
-            color: isActive ? "#2b6cb0" : "inherit"
+            color: isActive ? "#2563eb" : "inherit",
           })}
           _focus={{
             boxShadow: "none"
