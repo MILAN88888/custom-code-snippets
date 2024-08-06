@@ -1,9 +1,10 @@
 import React from "react";
-import Editor from "@monaco-editor/react";
+import Editor, { EditorProps } from "@monaco-editor/react";
 
-const CodeMirrorEditor: React.FC = () => {
-  const code = "<?php \n";
-  return <Editor height="500px" theme="vs-dark" language="php" value={code} />;
+interface CodeMirrorEditorProps extends EditorProps {}
+
+const CodeMirrorEditor: React.FC<CodeMirrorEditorProps> = (props) => {
+  return <Editor {...props} />;
 };
 
 export default CodeMirrorEditor;

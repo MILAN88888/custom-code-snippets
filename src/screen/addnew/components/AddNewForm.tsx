@@ -6,7 +6,14 @@ import CodeSnippetEditor from "./CodeMirrorEditor";
 
 const AddNewForm = () => {
   const { handleSubmit } = useForm();
-
+  const [code, setCode] = useState("<?php \n");
+  const editorProps = {
+    value: code,
+    height: "500px",
+    theme: "vs-dark",
+    language: "php",
+    onChange: (value: string | undefined) => setCode(value || "")
+  };
   const onSubmit = (data: any) => {};
 
   return (
@@ -39,7 +46,7 @@ const AddNewForm = () => {
               </FormLabel>
             </Stack>
             <Box minW="900px">
-              <CodeSnippetEditor />
+              <CodeSnippetEditor {...editorProps} />
             </Box>
           </Stack>
         </Stack>
