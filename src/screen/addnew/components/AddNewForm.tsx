@@ -13,9 +13,10 @@ import {
 } from "@chakra-ui/react";
 import { __ } from "@wordpress/i18n";
 import React from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { InfoIcon } from "@chakra-ui/icons";
 import CodeSnippetEditor from "./CodeMirrorEditor";
+import { AddNew } from "./../../../types/index";
 
 const AddNewForm: React.FC = () => {
   const {
@@ -32,7 +33,7 @@ const AddNewForm: React.FC = () => {
     }
   });
 
-  const onSubmit = (data: any) => {
+  const onSubmit: SubmitHandler<AddNew> = (data: AddNew) => {
     console.log("Form submitted with data:", data);
   };
 
