@@ -12,7 +12,8 @@
  namespace CCSNPT;
 
  use CCSNPT\Menus\Menus as Menus;
-use CCSNPT\Migration\Migration;
+ use CCSNPT\Migration\Migration;
+ use CCSNPT\RestApi;
 
  /**
   * CSSNTP setup.
@@ -38,6 +39,7 @@ class CCSNPT {
 		add_filter( 'plugin_row_meta', array( $this, 'plugin_row_meta' ), 20, 2 );
 		$this->includes();
 	}
+
 	/**
 	 * Main plugin class instance.
 	 *
@@ -99,5 +101,7 @@ class CCSNPT {
 	 */
 	private function includes() {
 			new Menus();
+			$rest_api = new RestApi();
+			$rest_api->init();
 	}
 }

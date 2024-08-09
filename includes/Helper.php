@@ -10,7 +10,7 @@
 namespace CCSNPT;
 
 /**
- * Helper methods for Wpeverest stmp.
+ * Helper methods.
  *
  * @since 1.0.0
  */
