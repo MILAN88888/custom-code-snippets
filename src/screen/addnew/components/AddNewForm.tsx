@@ -9,7 +9,8 @@ import {
   Stack,
   Text,
   Textarea,
-  Tooltip
+  Tooltip,
+  useToast
 } from "@chakra-ui/react";
 import { __ } from "@wordpress/i18n";
 import React from "react";
@@ -17,8 +18,12 @@ import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { InfoIcon } from "@chakra-ui/icons";
 import CodeSnippetEditor from "./CodeMirrorEditor";
 import { AddNew } from "./../../../types/index";
+import { useMutation } from "@tanstack/react-query";
+import { addNewSnippet } from "./../../../api/api";
 
 const AddNewForm: React.FC = () => {
+  const toast = useToast();
+
   const {
     handleSubmit,
     control,
@@ -32,9 +37,28 @@ const AddNewForm: React.FC = () => {
       tags: ""
     }
   });
+  const addNewSnippetMutation = useMutation({
+    mutationFn: addNewSnippet,
+    onSuccess: (res: any) => {
+      toast({
+        title: res.message,
+        status: "success",
+        duration: 3000,
+        isClosable: true
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: error.message,
+        status: "error",
+        duration: 3000,
+        isClosable: true
+      });
+    }
+  });
 
-  const onSubmit: SubmitHandler<AddNew> = (data: AddNew) => {
-    console.log("Form submitted with data:", data);
+  const onSubmit: SubmitHandler<AddNew> = (data: any) => {
+    addNewSnippetMutation.mutate(data);
   };
 
   return (
