@@ -9,8 +9,12 @@ export type ccsnptScriptDataType = {
 
 export type AddNew = {
   title: string;
-  codeSnippet: string;
+  codesnippet: string;
   priority: number;
   description: string;
   tags: string;
 };
+
+export type BackendErrors = {
+	[key: string]: string;
+  };

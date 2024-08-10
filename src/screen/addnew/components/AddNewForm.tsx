@@ -17,7 +17,7 @@ import React from "react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { InfoIcon } from "@chakra-ui/icons";
 import CodeSnippetEditor from "./CodeMirrorEditor";
-import { AddNew } from "./../../../types/index";
+import { AddNew, BackendErrors } from "./../../../types/index";
 import { useMutation } from "@tanstack/react-query";
 import { addNewSnippet } from "./../../../api/api";
 
@@ -27,11 +27,12 @@ const AddNewForm: React.FC = () => {
   const {
     handleSubmit,
     control,
-    formState: { errors, isSubmitting }
+    formState: { errors, isSubmitting },
+    setError
   } = useForm({
     defaultValues: {
       title: "",
-      codeSnippet: "",
+      codesnippet: "",
       priority: 10,
       description: "",
       tags: ""
@@ -48,6 +49,15 @@ const AddNewForm: React.FC = () => {
       });
     },
     onError: (error: any) => {
+      if (error.errors) {
+        const backendErrors: BackendErrors = error.errors;
+        Object.entries(backendErrors).forEach(([field, message]) => {
+          setError(field as keyof AddNew, {
+            type: "server",
+            message: message
+          });
+        });
+      }
       toast({
         title: error.message,
         status: "error",
@@ -124,21 +134,28 @@ const AddNewForm: React.FC = () => {
               </FormLabel>
             </Stack>
             <Box minW="900px">
-              <Controller
-                name="codeSnippet"
-                control={control}
-                render={({ field }) => (
-                  <CodeSnippetEditor
-                    {...field}
-                    height="500px"
-                    theme="vs-dark"
-                    language="php"
-                    onChange={(value: string | undefined) =>
-                      field.onChange(value ?? "")
-                    }
-                  />
+              <FormControl isInvalid={!!errors.codesnippet}>
+                <Controller
+                  name="codesnippet"
+                  control={control}
+                  render={({ field }) => (
+                    <CodeSnippetEditor
+                      {...field}
+                      height="500px"
+                      theme="vs-dark"
+                      language="php"
+                      onChange={(value: string | undefined) =>
+                        field.onChange(value ?? "")
+                      }
+                    />
+                  )}
+                />
+                {errors.codesnippet && (
+                  <FormErrorMessage>
+                    {errors.codesnippet.message}
+                  </FormErrorMessage>
                 )}
-              />
+              </FormControl>
             </Box>
           </Stack>
           <Stack direction="row" gap="32px" justifyContent="flex-start">
@@ -165,7 +182,16 @@ const AddNewForm: React.FC = () => {
                 <Input
                   placeholder={__("Set the priority", "custom-code-snippets")}
                   {...control.register("priority", {
-                    required: __("Priority is required", "custom-code-snippets")
+                    required: __(
+                      "Priority is required",
+                      "custom-code-snippets"
+                    ),
+                    validate: (value) =>
+                      value >= 0 ||
+                      __(
+                        "Priority must be a non-negative number.",
+                        "custom-code-snippets"
+                      )
                   })}
                   type="number"
                   min="0"

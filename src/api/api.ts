@@ -9,8 +9,6 @@ export const addNewSnippet = async (addNewData: any) => {
     headers: {
       "X-WP-Nonce": ccsnptScriptData.ccsnptRestApiNonce
     },
-    data: {
-      add_new_data: addNewData
-    }
+    data: addNewData
   }).then((res) => res);
 };
