@@ -28,7 +28,8 @@ const AddNewForm: React.FC = () => {
     handleSubmit,
     control,
     formState: { errors, isSubmitting },
-    setError
+    setError,
+    reset
   } = useForm({
     defaultValues: {
       title: "",
@@ -47,6 +48,7 @@ const AddNewForm: React.FC = () => {
         duration: 3000,
         isClosable: true
       });
+      reset();
     },
     onError: (error: any) => {
       if (error.errors) {
