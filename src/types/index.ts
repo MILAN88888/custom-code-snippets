@@ -13,6 +13,7 @@ export type AddNew = {
   priority: number;
   description: string;
   tags: string;
+  active: boolean|number;
 };
 
 export type BackendErrors = {

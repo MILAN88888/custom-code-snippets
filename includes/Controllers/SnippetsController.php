@@ -77,8 +77,9 @@ class SnippetsController {
 		if (isset($ptags) && !is_string($tags)) {
 			$errors['tags'] = esc_html__('Tags must be a string.', 'custom-code-snippets');
 		}
+		$active = isset($params['active']) ? absint( $params['active'] ) : 0;
 
-		$data = compact('title', 'codesnippet', 'priority', 'description', 'tags');
+		$data = compact('title', 'codesnippet', 'priority', 'description', 'tags', 'active');
 
 		return array('errors'=>$errors, 'data'=>$data);
 	}

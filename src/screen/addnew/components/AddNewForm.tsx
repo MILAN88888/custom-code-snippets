@@ -29,14 +29,17 @@ const AddNewForm: React.FC = () => {
     control,
     formState: { errors, isSubmitting },
     setError,
-    reset
-  } = useForm({
+    reset,
+    register,
+    setValue
+  } = useForm<AddNew>({
     defaultValues: {
       title: "",
       codesnippet: "",
       priority: 10,
       description: "",
-      tags: ""
+      tags: "",
+      active: 0
     }
   });
   const addNewSnippetMutation = useMutation({
@@ -69,7 +72,7 @@ const AddNewForm: React.FC = () => {
     }
   });
 
-  const onSubmit: SubmitHandler<AddNew> = (data: any) => {
+  const onSubmit: SubmitHandler<AddNew> = (data: AddNew) => {
     addNewSnippetMutation.mutate(data);
   };
 
@@ -105,7 +108,7 @@ const AddNewForm: React.FC = () => {
               <FormControl isInvalid={!!errors.title}>
                 <Input
                   placeholder={__("Enter the title", "custom-code-snippets")}
-                  {...control.register("title", {
+                  {...register("title", {
                     required: __("Title is required", "custom-code-snippets")
                   })}
                   type="text"
@@ -183,7 +186,7 @@ const AddNewForm: React.FC = () => {
               <FormControl isInvalid={!!errors.priority}>
                 <Input
                   placeholder={__("Set the priority", "custom-code-snippets")}
-                  {...control.register("priority", {
+                  {...register("priority", {
                     required: __(
                       "Priority is required",
                       "custom-code-snippets"
@@ -231,7 +234,7 @@ const AddNewForm: React.FC = () => {
                     "Enter the description",
                     "custom-code-snippets"
                   )}
-                  {...control.register("description", {
+                  {...register("description", {
                     required: __(
                       "Description is required",
                       "custom-code-snippets"
@@ -270,10 +273,10 @@ const AddNewForm: React.FC = () => {
               <FormControl isInvalid={!!errors.tags}>
                 <Input
                   placeholder={__(
-                    "Enter the tags seperated by comma",
+                    "Enter the tags separated by comma",
                     "custom-code-snippets"
                   )}
-                  {...control.register("tags")}
+                  {...register("tags")}
                   type="text"
                 />
               </FormControl>
@@ -288,6 +291,7 @@ const AddNewForm: React.FC = () => {
                 color="white"
                 type="submit"
                 disabled={isSubmitting}
+                onClick={() => setValue("active", 1)}
               >
                 {isSubmitting ? (
                   <Spinner />
@@ -301,6 +305,7 @@ const AddNewForm: React.FC = () => {
                 color="white"
                 type="submit"
                 disabled={isSubmitting}
+                onClick={() => setValue("active", 0)}
               >
                 {isSubmitting ? (
                   <Spinner />
