@@ -10,12 +10,27 @@
 
 namespace CCSNPT\Controllers;
 
+use CCSNPT\Models\Snippets;
+
 /**
  * Add Snippets Routes class.
  *
  * @since 1.0.0
  */
 class SnippetsController {
+	/**
+	 * Snippet model object.
+	 *
+	 * @var [object]
+	 */
+	protected $snippets;
+
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		$this->snippets = new Snippets();
+	}
 
 	/**
 	 * Validate the snippet data.
@@ -34,7 +49,7 @@ class SnippetsController {
 			$errors['title'] = esc_hmtl__( 'Title must be a string and less than 255 characters.', 'custom-code-snippets' );
 		}
 
-		$codesnippet = isset($params['codesnippet']) ? sanitize_text_field($params['codesnippet']):'';
+		$codesnippet = isset($params['codesnippet']) ? serialize(sanitize_text_field($params['codesnippet'])):'';
 		if (empty($codesnippet)) {
 			$errors['codesnippet'] = esc_html__('Code snippet is required.', 'custom-code-snippets');
 		} else if (!is_string($codesnippet)) {
@@ -87,9 +102,10 @@ class SnippetsController {
 			);
 		}
 
+		$res = $this->snippets->save_snippets( $validated_data['data'] );
 
 		return new \WP_REST_Response(
-			$validated_data['data'],
+			array('message'=>$res ? esc_html__( 'Saved successfully!!', 'custom-code-snippets' )  : esc_html__( 'Save Failed!!', 'custom-code-snippets' )  ),
 			200
 		);
 	}
