@@ -23,3 +23,14 @@ export const getSnippets = async (params: any) => {
     data: params
   }).then((res) => res);
 };
+
+export const updateStatusSnippets = async (data: any) => {
+  return apiFetch({
+    path: ENDPOINTS.UpdateStatusSnippets,
+    method: "POST",
+    headers: {
+      "X-WP-Nonce": ccsnptScriptData.ccsnptRestApiNonce
+    },
+    data: data
+  }).then((res) => res);
+};

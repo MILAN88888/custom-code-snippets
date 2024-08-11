@@ -42,4 +42,15 @@ class Snippets {
 		$sql = "SELECT * FROM {$wpdb->prefix}ccsnpt_snippets";
 		return $wpdb->get_results($sql);
 	}
+	/**
+	 * Update the snippet status.
+	 *
+	 * @param [array] $params The params.
+	 * @return boolean
+	 */
+	public function update_status($params) {
+		global $wpdb;
+
+		return $wpdb->update($wpdb->prefix.'ccsnpt_snippets',array('active'=>$params['active']),array('id'=>$params['id']),array('%s'), array('%d'));
+	}
 }

@@ -122,4 +122,21 @@ class SnippetsController {
 
 		return $this->snippets->get_snippets($params);
 	}
+	/**
+	 * Update the snippets status.
+	 *
+	 * @param [array] $request The requested data.
+	 * @return boolean|array
+	 */
+	public function update_status($request) {
+		$params = $request->get_json_params();
+		if(!isset($params['id']) || empty($params['id']) || !isset($params['active']) ) {
+			return new \WP_REST_Response(
+				array('message'=>esc_html__('Failed to udpate!!', 'custom-code-snippets')),
+				400
+			);
+		}
+
+		return $this->snippets->update_status($params) ? $params : false;
+	}
 }

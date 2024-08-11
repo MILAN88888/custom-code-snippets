@@ -59,6 +59,16 @@ class SnippetsRoutes {
 				'permission_callback' => array( __CLASS__, 'check_access_permissions' ),
 			)
 		);
+
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/update/status',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( new SnippetsController(), 'update_status' ),
+				'permission_callback' => array( __CLASS__, 'check_access_permissions' ),
+			)
+		);
 	}
 	/**
 	 * Check if a given request has access to update a setting
