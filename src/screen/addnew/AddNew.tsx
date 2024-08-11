@@ -11,6 +11,7 @@ const AddNew: React.FC = () => {
       bg="primary.50"
       height="100vh"
       borderRadius="8px"
+      mb="20px"
     >
       <Box height="76px" gap="16px">
         <Stack
@@ -38,7 +39,6 @@ const AddNew: React.FC = () => {
               "custom-code-snippets"
             )}
           </Text>
-          <Divider border="1px solid #DFDFDF" />
           <AddNewForm />
         </Stack>
       </Box>

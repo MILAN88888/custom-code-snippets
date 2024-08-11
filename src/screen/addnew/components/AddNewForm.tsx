@@ -81,10 +81,10 @@ const AddNewForm: React.FC = () => {
       padding="20px 20px 40px 20px"
       height="100vh"
       borderRadius="8px"
-      border="1px solid red.100"
+      boxShadow="0px 0px 10px rgba(0, 0, 0, 0.1)"
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Stack direction="column" gap="32px">
+        <Stack direction="column" gap="32px" mb="50px">
           <Stack direction="row" gap="32px" justifyContent="flex-start">
             <Stack alignItems="left" justifyContent="flex-start" w="250px">
               <FormLabel>
@@ -282,7 +282,7 @@ const AddNewForm: React.FC = () => {
               </FormControl>
             </Box>
           </Stack>
-          <Stack direction="row" gap="32px">
+          <Stack direction="row" gap="32px" mb="50px">
             <Stack justifyContent="flex-start" w="250px"></Stack>
             <Stack gap="32px" direction="row">
               <Button

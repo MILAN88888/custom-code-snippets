@@ -5,16 +5,16 @@ import Menus from "./Menus";
 
 const Header = () => {
   return (
-    <Box
-      position={{
-        sm: "sticky"
-      }}
+    <Stack
+      width="100%"
+      position="fixed"
       zIndex={1}
-      height="70px"
       padding="18px 25px 18px 25px"
-      bg="gray.100"
+      bg="white"
+      height="80px"
+      boxShadow="0px 0px 10px rgba(0, 0, 0, 0.1)"
     >
-      <Stack direction="row" minH="70px" justify="space-between">
+      <Stack direction="row" justify="space-between" alignItems="center">
         <Box height="35px">
           <HStack gap="16px">
             <Image
@@ -25,10 +25,10 @@ const Header = () => {
               left="1.95px"
             />
             <Heading
-               fontWeight="600"
-			   size="20px"
-			   lineHeight="8px"
-			   color="dark.500"
+              fontWeight="600"
+              size="20px"
+              lineHeight="8px"
+              color="dark.500"
               letterSpacing="0.5px"
             >
               {__("Custom Code Snippets", "custom-code-snippets")}
@@ -37,7 +37,7 @@ const Header = () => {
           </HStack>
         </Box>
       </Stack>
-    </Box>
+    </Stack>
   );
 };
 

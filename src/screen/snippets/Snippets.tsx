@@ -38,7 +38,6 @@ const Snippets: React.FC = () => {
               "custom-code-snippets"
             )}
           </Text>
-          <Divider border="1px solid #DFDFDF" />
           <SnippetTable />
         </Stack>
       </Box>
