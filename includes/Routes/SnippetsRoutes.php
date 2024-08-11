@@ -50,12 +50,21 @@ class SnippetsRoutes {
 			)
 		);
 
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/get',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( new SnippetsController(), 'get_snippets' ),
+				'permission_callback' => array( __CLASS__, 'check_access_permissions' ),
+			)
+		);
 	}
 	/**
 	 * Check if a given request has access to update a setting
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
-	 * 
+	 *
 	 * @return WP_Error|bool
 	 */
 	public static function check_access_permissions( $request ) {

@@ -110,4 +110,16 @@ class SnippetsController {
 			200
 		);
 	}
+
+	/**
+	 * Get the snippet data.
+	 *
+	 * @param [type] $request The request data.
+	 *
+	 * @return \WP_REST_Response The response object.
+	 */
+	public function get_snippets( $params ) {
+
+		return $this->snippets->get_snippets($params);
+	}
 }

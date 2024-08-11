@@ -12,3 +12,14 @@ export const addNewSnippet = async (addNewData: any) => {
     data: addNewData
   }).then((res) => res);
 };
+
+export const getSnippets = async (params: any) => {
+  return apiFetch({
+    path: ENDPOINTS.GetSnippets,
+    method: "POST",
+    headers: {
+      "X-WP-Nonce": ccsnptScriptData.ccsnptRestApiNonce
+    },
+    data: params
+  }).then((res) => res);
+};

@@ -28,4 +28,18 @@ class Snippets {
 
 		return $wpdb->insert($wpdb->prefix.'ccsnpt_snippets', $data);
 	}
+
+	/**
+	 * Get Snippets data.
+	 *
+	 * @param [array] $params The get params.
+	 *
+	 * @return array
+	 */
+	public function get_snippets( $params ) {
+		global $wpdb;
+
+		$sql = "SELECT * FROM {$wpdb->prefix}ccsnpt_snippets";
+		return $wpdb->get_results($sql);
+	}
 }
