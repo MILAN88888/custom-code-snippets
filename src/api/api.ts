@@ -34,3 +34,14 @@ export const updateStatusSnippets = async (data: any) => {
     data: data
   }).then((res) => res);
 };
+
+export const deleteSnippets = async (ids: any) => {
+  return apiFetch({
+    path: ENDPOINTS.DeleteSnippets,
+    method: "POST",
+    headers: {
+      "X-WP-Nonce": ccsnptScriptData.ccsnptRestApiNonce
+    },
+    data: ids
+  }).then((res) => res);
+};

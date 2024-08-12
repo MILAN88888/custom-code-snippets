@@ -139,4 +139,23 @@ class SnippetsController {
 
 		return $this->snippets->update_status($params) ? $params : false;
 	}
+	/**
+	 * Delete the snippets.
+	 *
+	  * @param [type] $request The request data.
+	 *
+	 * @return \WP_REST_Response The response object.
+	 */
+	public function delete_snippets($request) {
+		$params = $request->get_json_params();
+
+		if(empty($params)) {
+			return new \WP_REST_Response(
+				array('message'=>esc_html__('Deletion failed!!', 'custom-code-snippets')),
+				400
+			);
+		}
+
+		return $this->snippets->delete_snippets($params);
+	}
 }

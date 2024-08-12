@@ -53,4 +53,21 @@ class Snippets {
 
 		return $wpdb->update($wpdb->prefix.'ccsnpt_snippets',array('active'=>$params['active']),array('id'=>$params['id']),array('%s'), array('%d'));
 	}
+	/**
+	 * Delete the snippets.
+	 *
+	 * @param [array] $ids The ids.
+	 * @return boolean
+	 */
+	public function delete_snippets($ids) {
+		global $wpdb;
+
+		$ids_placeholders = implode(',', array_fill(0, count($ids), '%d'));
+
+		$sql = $wpdb->prepare(
+			"DELETE FROM {$wpdb->prefix}ccsnpt_snippets WHERE id IN ($ids_placeholders)",
+			$ids
+		);
+		return $wpdb->query($sql);
+	}
 }

@@ -69,6 +69,16 @@ class SnippetsRoutes {
 				'permission_callback' => array( __CLASS__, 'check_access_permissions' ),
 			)
 		);
+
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/delete',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( new SnippetsController(), 'delete_snippets' ),
+				'permission_callback' => array( __CLASS__, 'check_access_permissions' ),
+			)
+		);
 	}
 	/**
 	 * Check if a given request has access to update a setting

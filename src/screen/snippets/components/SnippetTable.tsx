@@ -16,7 +16,7 @@ import {
 import { __ } from "@wordpress/i18n";
 import React from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getSnippets, updateStatusSnippets } from "./../../../api/api";
+import { deleteSnippets, getSnippets, updateStatusSnippets } from "./../../../api/api";
 import { RiDeleteBinFill } from "react-icons/ri";
 import { BiEdit } from "react-icons/bi";
 
@@ -70,6 +70,34 @@ const SnippetTable: React.FC = () => {
       });
     }
   });
+  const deleteMutation = useMutation({
+    mutationFn: deleteSnippets,
+    onSuccess: (res: any) => {
+      if (res === false) {
+        toast({
+          title: __("Deletation failed!!", "custom-code-snippets"),
+          status: "error"
+        });
+      } else {
+        toast({
+          title: __("Deleted successfully!!", "custom-code-snippets"),
+          status: "success",
+          duration: 3000,
+          isClosable: true
+        });
+      }
+
+      queryClient.invalidateQueries(["snippets"]);
+    },
+    onError: (error) => {
+      toast({
+        title: error.message,
+        status: "error",
+        duration: 3000,
+        isClosable: true
+      });
+    }
+  });
 
   if (isLoading) {
     return (
@@ -94,6 +122,9 @@ const SnippetTable: React.FC = () => {
     statusMutation.mutate({ id, active: active === "1" ? false : true });
   };
 
+  const deleteSnippet = (data: any) => {
+    deleteMutation.mutate(data);
+  };
   return (
     <Stack
       p={4}
@@ -137,7 +168,11 @@ const SnippetTable: React.FC = () => {
                         }
                       />
                       <BiEdit style={{ fontSize: "16px" }} />
-                      <RiDeleteBinFill style={{ fontSize: "16px" }} />
+                      <RiDeleteBinFill
+                        onClick={() => deleteSnippet([snippet.id])}
+                        cursor="pointer"
+                        style={{ fontSize: "16px" }}
+                      />
                     </Stack>
                   </Stack>
                 </Td>
