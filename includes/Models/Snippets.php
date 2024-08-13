@@ -26,7 +26,21 @@ class Snippets {
 	public function save_snippets( $data ) {
 		global $wpdb;
 
-		return $wpdb->insert($wpdb->prefix.'ccsnpt_snippets', $data);
+		if ( isset( $data['id'] ) && !empty( $data['id'] ) ) {
+			$id = $data['id'];
+			unset( $data['id'] );
+
+			return $wpdb->update(
+				$wpdb->prefix . 'ccsnpt_snippets',
+				$data,
+				array( 'id' => $id )
+			);
+		} else {
+			return $wpdb->insert(
+				$wpdb->prefix . 'ccsnpt_snippets',
+				$data
+			);
+		}
 	}
 
 	/**
@@ -40,6 +54,9 @@ class Snippets {
 		global $wpdb;
 
 		$sql = "SELECT * FROM {$wpdb->prefix}ccsnpt_snippets";
+		if(isset($params['id']) && !empty($params['id'])) {
+			$sql .= $wpdb->prepare(' WHERE id = %d', $params['id']);
+		}
 		return $wpdb->get_results($sql);
 	}
 	/**

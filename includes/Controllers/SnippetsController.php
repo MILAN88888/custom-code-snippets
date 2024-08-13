@@ -41,6 +41,7 @@ class SnippetsController {
 	 */
 	protected function validate_snippet_data($params) {
 		$errors = array();
+		$id = isset($params['id']) ? absint($params['id']) : '';
 		$title = isset($params['title']) ? sanitize_text_field($params['title']) : '';
 
 		if (empty($title)) {
@@ -49,7 +50,7 @@ class SnippetsController {
 			$errors['title'] = esc_hmtl__( 'Title must be a string and less than 255 characters.', 'custom-code-snippets' );
 		}
 
-		$codesnippet = isset($params['codesnippet']) ? serialize(sanitize_text_field($params['codesnippet'])):'';
+		$codesnippet = isset($params['codesnippet']) ? maybe_serialize(sanitize_text_field($params['codesnippet'])):'';
 		if (empty($codesnippet)) {
 			$errors['codesnippet'] = esc_html__('Code snippet is required.', 'custom-code-snippets');
 		} else if (!is_string($codesnippet)) {
@@ -79,7 +80,7 @@ class SnippetsController {
 		}
 		$active = isset($params['active']) ? absint( $params['active'] ) : 0;
 
-		$data = compact('title', 'codesnippet', 'priority', 'description', 'tags', 'active');
+		$data = compact('id','title', 'codesnippet', 'priority', 'description', 'tags', 'active');
 
 		return array('errors'=>$errors, 'data'=>$data);
 	}
@@ -118,9 +119,12 @@ class SnippetsController {
 	 *
 	 * @return \WP_REST_Response The response object.
 	 */
-	public function get_snippets( $params ) {
+	public function get_snippets( $request ) {
+		$params = $request->get_params();
 
-		return $this->snippets->get_snippets($params);
+		$res = $this->snippets->get_snippets($params);
+
+		return $res;
 	}
 	/**
 	 * Update the snippets status.

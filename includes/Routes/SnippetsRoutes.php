@@ -54,7 +54,7 @@ class SnippetsRoutes {
 			$this->namespace,
 			'/' . $this->rest_base . '/get',
 			array(
-				'methods'             => 'POST',
+				'methods'             => 'GET',
 				'callback'            => array( new SnippetsController(), 'get_snippets' ),
 				'permission_callback' => array( __CLASS__, 'check_access_permissions' ),
 			)
