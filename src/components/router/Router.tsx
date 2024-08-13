@@ -6,7 +6,8 @@ const Router: React.FC = () => {
   return (
     <Routes>
       <Route path="/" element={<Snippets />} />
-      <Route path="/add-new" element={<AddNew />} />
+      <Route path="/snippet/add" element={<AddNew />} />
+      <Route path="/snippet/edit/:id" element={<AddNew />} />
     </Routes>
   );
 };
