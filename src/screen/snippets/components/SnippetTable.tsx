@@ -16,12 +16,18 @@ import {
 import { __ } from "@wordpress/i18n";
 import React from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { deleteSnippets, getSnippets, updateStatusSnippets } from "./../../../api/api";
+import {
+  deleteSnippets,
+  getSnippets,
+  updateStatusSnippets
+} from "./../../../api/api";
 import { RiDeleteBinFill } from "react-icons/ri";
 import { BiEdit } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
 
 const SnippetTable: React.FC = () => {
   const toast = useToast();
+  const navigate = useNavigate();
   type statusToggerProp = {
     id: number;
     active: string;
@@ -31,7 +37,7 @@ const SnippetTable: React.FC = () => {
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["snippets", params],
-    queryFn: getSnippets
+    queryFn: () => getSnippets(params)
   });
 
   const statusMutation = useMutation({
@@ -125,6 +131,11 @@ const SnippetTable: React.FC = () => {
   const deleteSnippet = (data: any) => {
     deleteMutation.mutate(data);
   };
+
+  const editSnippet = (id: number) => {
+    navigate(`/snippet/edit/${id}`);
+  };
+
   return (
     <Stack
       p={4}
@@ -167,7 +178,11 @@ const SnippetTable: React.FC = () => {
                           })
                         }
                       />
-                      <BiEdit style={{ fontSize: "16px" }} />
+                      <BiEdit
+                        onClick={() => editSnippet(snippet.id)}
+                        cursor="pointer"
+                        style={{ fontSize: "16px" }}
+                      />
                       <RiDeleteBinFill
                         onClick={() => deleteSnippet([snippet.id])}
                         cursor="pointer"

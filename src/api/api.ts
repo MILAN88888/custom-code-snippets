@@ -1,6 +1,7 @@
 import { ENDPOINTS } from "./endpoints";
 import apiFetch from "@wordpress/api-fetch";
 import { ccsnptScriptData } from "./../utils/global";
+import { buildQueryString } from "./../utils/queryUtils";
 
 export const addNewSnippet = async (addNewData: any) => {
   return apiFetch({
@@ -13,14 +14,15 @@ export const addNewSnippet = async (addNewData: any) => {
   }).then((res) => res);
 };
 
-export const getSnippets = async (params: any) => {
+export const getSnippets = async ({ queryKey }: any) => {
+  const queryString = buildQueryString(queryKey ? queryKey[0] : "");
+
   return apiFetch({
-    path: ENDPOINTS.GetSnippets,
-    method: "POST",
+    path: `${ENDPOINTS.GetSnippets}?${queryString}`,
+    method: "GET",
     headers: {
       "X-WP-Nonce": ccsnptScriptData.ccsnptRestApiNonce
-    },
-    data: params
+    }
   }).then((res) => res);
 };
 

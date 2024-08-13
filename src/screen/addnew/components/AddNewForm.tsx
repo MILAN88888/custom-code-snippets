@@ -13,35 +13,20 @@ import {
   useToast
 } from "@chakra-ui/react";
 import { __ } from "@wordpress/i18n";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { InfoIcon } from "@chakra-ui/icons";
 import CodeSnippetEditor from "./CodeMirrorEditor";
 import { AddNew, BackendErrors } from "./../../../types/index";
-import { useMutation } from "@tanstack/react-query";
-import { addNewSnippet } from "./../../../api/api";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { addNewSnippet, getSnippets } from "./../../../api/api";
+import { unserialize } from "php-serialize";
 
-const AddNewForm: React.FC = () => {
+interface AddNewFormProps {
+  id?: string;
+}
+const AddNewForm: React.FC<AddNewFormProps> = ({ id }) => {
   const toast = useToast();
-
-  const {
-    handleSubmit,
-    control,
-    formState: { errors, isSubmitting },
-    setError,
-    reset,
-    register,
-    setValue
-  } = useForm<AddNew>({
-    defaultValues: {
-      title: "",
-      codesnippet: "",
-      priority: 10,
-      description: "",
-      tags: "",
-      active: 0
-    }
-  });
   const addNewSnippetMutation = useMutation({
     mutationFn: addNewSnippet,
     onSuccess: (res: any) => {
@@ -71,7 +56,40 @@ const AddNewForm: React.FC = () => {
       });
     }
   });
+  const {
+    handleSubmit,
+    control,
+    formState: { errors, isSubmitting },
+    setError,
+    reset,
+    register,
+    setValue
+  } = useForm<AddNew>({
+    defaultValues: {
+      id: "",
+      title: "",
+      codesnippet: "",
+      priority: 10,
+      description: "",
+      tags: "",
+      active: 0
+    }
+  });
 
+  const { data } = useQuery({
+    queryKey: [{ id }],
+    queryFn: getSnippets,
+    enabled: !!id
+  });
+
+  useEffect(() => {
+    if (data) {
+      const snippet = (data as any)[0];
+      Object.keys(snippet).forEach((key) => {
+        setValue(key as keyof AddNew, snippet[key]);
+      });
+    }
+  }, [data, setValue]);
   const onSubmit: SubmitHandler<AddNew> = (data: AddNew) => {
     addNewSnippetMutation.mutate(data);
   };
@@ -291,10 +309,17 @@ const AddNewForm: React.FC = () => {
                 color="white"
                 type="submit"
                 disabled={isSubmitting}
-                onClick={() => setValue("active", 1)}
+                onClick={() => {
+                  if (id) {
+                    setValue("id", id);
+                  }
+                  setValue("active", 1);
+                }}
               >
                 {isSubmitting ? (
                   <Spinner />
+                ) : id ? (
+                  __("Update and Active", "custom-code-snippets")
                 ) : (
                   __("Save and Active", "custom-code-snippets")
                 )}
@@ -305,10 +330,17 @@ const AddNewForm: React.FC = () => {
                 color="white"
                 type="submit"
                 disabled={isSubmitting}
-                onClick={() => setValue("active", 0)}
+                onClick={() => {
+                  if (id) {
+                    setValue("id", id);
+                  }
+                  setValue("active", 0);
+                }}
               >
                 {isSubmitting ? (
                   <Spinner />
+                ) : id ? (
+                  __("Update", "custom-code-snippets")
                 ) : (
                   __("Save", "custom-code-snippets")
                 )}

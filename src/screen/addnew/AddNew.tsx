@@ -1,9 +1,12 @@
-import { Box, Divider, Heading, Stack, Text } from "@chakra-ui/react";
+import { Box, Heading, Stack, Text } from "@chakra-ui/react";
 import { __ } from "@wordpress/i18n";
 import React from "react";
 import AddNewForm from "./components/AddNewForm";
+import { useParams } from "react-router-dom";
 
 const AddNew: React.FC = () => {
+  const { id } = useParams<{ id?: string }>();
+  const editProps = id ? { id: id } : {};
   return (
     <Stack
       width="100%"
@@ -26,7 +29,9 @@ const AddNew: React.FC = () => {
             lineHeight="6px"
             color="dark.500"
           >
-            {__("Add New Custom Code Snippets", "custom-code-snippets")}
+            {id
+              ? __("Edit Custom Code Snippets", "custom-code-snippets")
+              : __("Add New Custom Code Snippets", "custom-code-snippets")}
           </Heading>
           <Text
             fontWeight="400"
@@ -34,12 +39,17 @@ const AddNew: React.FC = () => {
             lineHeight="8px"
             color="primary.400"
           >
-            {__(
-              "Easily Add New Custom Code Snippets to your library to enhance your functionality.",
-              "custom-code-snippets"
-            )}
+            {id
+              ? __(
+                  "Easily edit Custom Code Snippets to your library to enhance your functionality.",
+                  "custom-code-snippets"
+                )
+              : __(
+                  "Easily Add New Custom Code Snippets to your library to enhance your functionality.",
+                  "custom-code-snippets"
+                )}
           </Text>
-          <AddNewForm />
+          <AddNewForm {...editProps} />
         </Stack>
       </Box>
     </Stack>

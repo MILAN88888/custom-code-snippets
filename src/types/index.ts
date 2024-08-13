@@ -8,12 +8,13 @@ export type ccsnptScriptDataType = {
 };
 
 export type AddNew = {
+  id: number | string;
   title: string;
   codesnippet: string;
   priority: number;
   description: string;
   tags: string;
-  active: boolean|number;
+  active: boolean | number;
 };
 
 export type BackendErrors = {
