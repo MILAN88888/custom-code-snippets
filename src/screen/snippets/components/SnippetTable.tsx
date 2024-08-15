@@ -11,7 +11,8 @@ import {
   Text,
   Checkbox,
   Switch,
-  useToast
+  useToast,
+  Box
 } from "@chakra-ui/react";
 import { __ } from "@wordpress/i18n";
 import React from "react";
@@ -24,6 +25,7 @@ import {
 import { RiDeleteBinFill } from "react-icons/ri";
 import { BiEdit } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
+import SnippetFilter from "./SnippetFilter";
 
 const SnippetTable: React.FC = () => {
   const toast = useToast();
@@ -137,78 +139,98 @@ const SnippetTable: React.FC = () => {
   };
 
   return (
-    <Stack
-      p={4}
-      bg="white"
-      borderRadius="md"
-      boxShadow="0px 0px 10px rgba(0, 0, 0, 0.1)"
-    >
-      <Table>
-        <Thead>
-          <Tr>
-            <Th>
-              <Checkbox name="select" value="all" />
-            </Th>
-            <Th>{__("Title", "custom-code-snippets")}</Th>
-            {/* <Th>{__("Type", "custom-code-snippets")}</Th> */}
-            <Th>{__("Description", "custom-code-snippets")}</Th>
-            <Th>{__("Tags", "custom-code-snippets")}</Th>
-            <Th>{__("Updated At", "custom-code-snippets")}</Th>
-            <Th>{__("Priority", "custom-code-snippets")}</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {data && data.length > 0 ? (
-            data.map((snippet: any, index: number) => (
-              <Tr key={index}>
-                <Td width="50px">
-                  <Checkbox data-id={snippet.id} />
-                </Td>
-                <Td>
-                  <Stack direction="column">
-                    <Text>{snippet.title}</Text>
-                    <Stack direction="row" gap="24px">
-                      <Switch
-                        size="sm"
-                        isChecked={snippet.active === "1" ? true : false}
-                        onChange={() =>
-                          statusToggler({
-                            id: snippet.id,
-                            active: snippet.active
-                          })
-                        }
-                      />
-                      <BiEdit
-                        onClick={() => editSnippet(snippet.id)}
-                        cursor="pointer"
-                        style={{ fontSize: "16px" }}
-                      />
-                      <RiDeleteBinFill
-                        onClick={() => deleteSnippet([snippet.id])}
-                        cursor="pointer"
-                        style={{ fontSize: "16px" }}
-                      />
-                    </Stack>
-                  </Stack>
-                </Td>
-                {/* <Td>{snippet.type}</Td> */}
-                <Td>{snippet.description}</Td>
-                <Td>{snippet.tags}</Td>
-                <Td>{snippet.updated_at}</Td>
-                <Td>{snippet.priority}</Td>
-              </Tr>
-            ))
-          ) : (
+    <Stack direction="column" gap="2px">
+      <Stack
+        p={4}
+        bg="white"
+        borderRadius="md"
+        boxShadow="0px 0px 10px rgba(0, 0, 0, 0.1)"
+      >
+        <SnippetFilter />
+      </Stack>
+      <Stack
+        p={4}
+        bg="white"
+        borderRadius="md"
+        boxShadow="0px 0px 10px rgba(0, 0, 0, 0.1)"
+      >
+        <Table>
+          <Thead>
             <Tr>
-              <Td colSpan={8}>
-                <Center>
-                  <Text>{__("No snippets found", "custom-code-snippets")}</Text>
-                </Center>
-              </Td>
+              <Th>
+                <Checkbox name="select" value="all" />
+              </Th>
+              <Th>{__("Title", "custom-code-snippets")}</Th>
+              {/* <Th>{__("Type", "custom-code-snippets")}</Th> */}
+              <Th>{__("Description", "custom-code-snippets")}</Th>
+              <Th>{__("Tags", "custom-code-snippets")}</Th>
+              <Th>{__("Updated At", "custom-code-snippets")}</Th>
+              <Th>{__("Priority", "custom-code-snippets")}</Th>
             </Tr>
-          )}
-        </Tbody>
-      </Table>
+          </Thead>
+          <Tbody>
+            {data && data.length > 0 ? (
+              data.map((snippet: any, index: number) => (
+                <Tr key={index}>
+                  <Td width="50px">
+                    <Checkbox data-id={snippet.id} />
+                  </Td>
+                  <Td>
+                    <Stack direction="column">
+                      <Text>{snippet.title}</Text>
+                      <Stack direction="row" gap="24px">
+                        <Switch
+                          size="sm"
+                          isChecked={snippet.active === "1" ? true : false}
+                          onChange={() =>
+                            statusToggler({
+                              id: snippet.id,
+                              active: snippet.active
+                            })
+                          }
+                        />
+                        <BiEdit
+                          onClick={() => editSnippet(snippet.id)}
+                          cursor="pointer"
+                          style={{ fontSize: "16px" }}
+                        />
+                        <RiDeleteBinFill
+                          onClick={() => deleteSnippet([snippet.id])}
+                          cursor="pointer"
+                          style={{ fontSize: "16px" }}
+                        />
+                      </Stack>
+                    </Stack>
+                  </Td>
+                  {/* <Td>{snippet.type}</Td> */}
+                  <Td>{snippet.description}</Td>
+                  <Td>{snippet.tags}</Td>
+                  <Td>{snippet.updated_at}</Td>
+                  <Td>{snippet.priority}</Td>
+                </Tr>
+              ))
+            ) : (
+              <Tr>
+                <Td colSpan={8}>
+                  <Center>
+                    <Text>
+                      {__("No snippets found", "custom-code-snippets")}
+                    </Text>
+                  </Center>
+                </Td>
+              </Tr>
+            )}
+          </Tbody>
+        </Table>
+      </Stack>
+      <Stack
+        p={4}
+        bg="white"
+        borderRadius="md"
+        boxShadow="0px 0px 10px rgba(0, 0, 0, 0.1)"
+      >
+        <Box>pagination</Box>
+      </Stack>
     </Stack>
   );
 };
