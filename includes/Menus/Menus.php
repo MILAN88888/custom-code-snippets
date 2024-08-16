@@ -42,7 +42,7 @@ class Menus {
 	</g>
 	</svg>';
 		$base64_svg = 'data:image/svg+xml;base64,' . base64_encode($svg); // phpcs:ignore
-		add_menu_page( esc_html__( 'Custom Code Snippets', 'custom-code-snippets' ), esc_html__( 'C-Code Snippets', 'custom-code-snippets' ), 'manage_options', 'custom-code-snippets', array( $this, 'main_page' ), $base64_svg );
+		add_menu_page( esc_html__( 'Custom Code Snippets', 'custom-code-snippets' ), esc_html__( 'Code Snippets', 'custom-code-snippets' ), 'manage_options', 'custom-code-snippets', array( $this, 'main_page' ), $base64_svg );
 	}
 
 	/**
