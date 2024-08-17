@@ -15,7 +15,7 @@ import {
   Box
 } from "@chakra-ui/react";
 import { __ } from "@wordpress/i18n";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   deleteSnippets,
@@ -28,18 +28,19 @@ import { useNavigate } from "react-router-dom";
 import SnippetFilter from "./SnippetFilter";
 
 const SnippetTable: React.FC = () => {
+  const [params, setParams] = useState({
+    searchByItem: "",
+    startDate: "",
+    endDate: ""
+  });
   const toast = useToast();
   const navigate = useNavigate();
-  type statusToggerProp = {
-    id: number;
-    active: string;
-  };
-  const params = {};
   const queryClient = useQueryClient();
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["snippets", params],
-    queryFn: () => getSnippets(params)
+    queryFn: () => getSnippets(params),
+    keepPreviousData: true // This keeps the previous data while the query is being re-fetched
   });
 
   const statusMutation = useMutation({
@@ -51,21 +52,14 @@ const SnippetTable: React.FC = () => {
           status: "error"
         });
       } else {
-        if (res["active"]) {
-          toast({
-            title: __("Activated successfully!!", "custom-code-snippets"),
-            status: "success",
-            duration: 3000,
-            isClosable: true
-          });
-        } else {
-          toast({
-            title: __("Deactivated successfully!!", "custom-code-snippets"),
-            status: "success",
-            duration: 3000,
-            isClosable: true
-          });
-        }
+        toast({
+          title: res.active
+            ? __("Activated successfully!!", "custom-code-snippets")
+            : __("Deactivated successfully!!", "custom-code-snippets"),
+          status: "success",
+          duration: 3000,
+          isClosable: true
+        });
       }
       queryClient.invalidateQueries(["snippets"]);
     },
@@ -78,12 +72,13 @@ const SnippetTable: React.FC = () => {
       });
     }
   });
+
   const deleteMutation = useMutation({
     mutationFn: deleteSnippets,
     onSuccess: (res: any) => {
       if (res === false) {
         toast({
-          title: __("Deletation failed!!", "custom-code-snippets"),
+          title: __("Deletion failed!!", "custom-code-snippets"),
           status: "error"
         });
       } else {
@@ -94,7 +89,6 @@ const SnippetTable: React.FC = () => {
           isClosable: true
         });
       }
-
       queryClient.invalidateQueries(["snippets"]);
     },
     onError: (error) => {
@@ -126,12 +120,12 @@ const SnippetTable: React.FC = () => {
     );
   }
 
-  const statusToggler = ({ id, active }: statusToggerProp) => {
+  const statusToggler = ({ id, active }: { id: number; active: string }) => {
     statusMutation.mutate({ id, active: active === "1" ? false : true });
   };
 
-  const deleteSnippet = (data: any) => {
-    deleteMutation.mutate(data);
+  const deleteSnippet = (id: number) => {
+    deleteMutation.mutate([id]);
   };
 
   const editSnippet = (id: number) => {
@@ -146,7 +140,7 @@ const SnippetTable: React.FC = () => {
         borderRadius="md"
         boxShadow="0px 0px 10px rgba(0, 0, 0, 0.1)"
       >
-        <SnippetFilter />
+        <SnippetFilter params={params} setParams={setParams} />
       </Stack>
       <Stack
         p={4}
@@ -161,7 +155,6 @@ const SnippetTable: React.FC = () => {
                 <Checkbox name="select" value="all" />
               </Th>
               <Th>{__("Title", "custom-code-snippets")}</Th>
-              {/* <Th>{__("Type", "custom-code-snippets")}</Th> */}
               <Th>{__("Description", "custom-code-snippets")}</Th>
               <Th>{__("Tags", "custom-code-snippets")}</Th>
               <Th>{__("Updated At", "custom-code-snippets")}</Th>
@@ -181,7 +174,7 @@ const SnippetTable: React.FC = () => {
                       <Stack direction="row" gap="24px">
                         <Switch
                           size="sm"
-                          isChecked={snippet.active === "1" ? true : false}
+                          isChecked={snippet.active === "1"}
                           onChange={() =>
                             statusToggler({
                               id: snippet.id,
@@ -195,14 +188,13 @@ const SnippetTable: React.FC = () => {
                           style={{ fontSize: "16px" }}
                         />
                         <RiDeleteBinFill
-                          onClick={() => deleteSnippet([snippet.id])}
+                          onClick={() => deleteSnippet(snippet.id)}
                           cursor="pointer"
                           style={{ fontSize: "16px" }}
                         />
                       </Stack>
                     </Stack>
                   </Td>
-                  {/* <Td>{snippet.type}</Td> */}
                   <Td>{snippet.description}</Td>
                   <Td>{snippet.tags}</Td>
                   <Td>{snippet.updated_at}</Td>
