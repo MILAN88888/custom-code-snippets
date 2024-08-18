@@ -1,24 +1,26 @@
 {
-  "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
-    "strict": true,
-    "jsx": "react",
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "baseUrl": ".",
-    "paths": {
-      "*": [
-        "node_modules/*"
-      ]
-    }
-  },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "build"
-  ]
-}
+	"compilerOptions": {
+	  "target": "es6",                        // Use ES6 for modern JavaScript features
+	  "module": "commonjs",                   // CommonJS for Node.js environments
+	  "strict": true,                         // Enable all strict type-checking options
+	  "jsx": "react-jsx",                     // Use the new JSX transform
+	  "esModuleInterop": true,                // Enable compatibility with CommonJS modules
+	  "skipLibCheck": true,                   // Skip type checking of declaration files
+	  "forceConsistentCasingInFileNames": true, // Ensure consistent casing in file names
+	  "baseUrl": ".",                         // Base directory for module resolution
+	  "paths": {
+		"*": ["node_modules/*"]               // Resolve modules from node_modules
+	  },
+	  "resolveJsonModule": true,              // Allows importing JSON files
+	  "allowSyntheticDefaultImports": true,   // Allow default imports from modules with no default export
+	  "moduleResolution": "node",             // Use Node module resolution strategy
+	  "isolatedModules": true                 // Ensures that all files are treated as isolated modules
+	},
+	"include": [
+	  "src/**/*"                             // Include all TypeScript files in the src directory
+	],
+	"exclude": [
+	  "node_modules",                        // Exclude node_modules
+	  "build"                                // Exclude build directory
+	]
+  }
