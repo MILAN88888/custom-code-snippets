@@ -20,3 +20,17 @@ export type AddNew = {
 export type BackendErrors = {
 	[key: string]: string;
   };
+
+  export type SnippetParams = {
+    searchByItem?: string;
+    startDate?: string;
+    endDate?: string;
+    offset: number;
+    limit?: number;
+  };
+
+  export type SnippetPagiProps = {
+    params: SnippetParams;
+    setParams: (params: SnippetParams) => void;
+    totalPages: number;
+  };

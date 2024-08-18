@@ -15,7 +15,7 @@ import {
   Box
 } from "@chakra-ui/react";
 import { __ } from "@wordpress/i18n";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   deleteSnippets,
@@ -26,13 +26,14 @@ import { RiDeleteBinFill } from "react-icons/ri";
 import { BiEdit } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import SnippetFilter from "./SnippetFilter";
+import SnippetPagination from "./SnippetPagination";
+import { SnippetParams } from "./../../../types/index";
 
-interface params {
-  searchByItem?: string;
-  startDate?: string;
-  endDate?: string;
-}
 const SnippetTable: React.FC = () => {
+  const toast = useToast();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
   const currentDate = new Date();
 
   const startDate = new Date(
@@ -50,14 +51,15 @@ const SnippetTable: React.FC = () => {
   )
     .toISOString()
     .split("T")[0];
-  const [params, setParams] = useState<params>({
+  const [params, setParams] = useState<SnippetParams>({
     searchByItem: "",
     startDate: startDate,
-    endDate: endDate
+    endDate: endDate,
+    offset: 1,
+    limit: 10
   });
-  const toast = useToast();
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
+
+  const [totalPages, setTotalPages] = useState<number>(10);
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["snippets", params],
@@ -145,6 +147,11 @@ const SnippetTable: React.FC = () => {
     navigate(`/snippet/edit/${id}`);
   };
 
+  const paginationProps = {
+    params,
+    setParams,
+    totalPages
+  };
   return (
     <Stack direction="column" gap="2px">
       <Stack
@@ -244,8 +251,10 @@ const SnippetTable: React.FC = () => {
         bg="white"
         borderRadius="md"
         boxShadow="0px 0px 10px rgba(0, 0, 0, 0.1)"
+        direction="column"
+        justifyItems="flex-end"
       >
-        <Box>pagination</Box>
+        <SnippetPagination {...paginationProps} />
       </Stack>
     </Stack>
   );

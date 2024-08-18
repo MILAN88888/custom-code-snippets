@@ -74,6 +74,12 @@ class Snippets {
 				$sql .= ' WHERE';
 				$sql .= implode(' AND ', $where_clause);
 			}
+
+			if ( isset( $params['limit'] ) || isset( $params['offset'] ) ) {
+				$limit = isset( $params['limit'] ) ? intval( $params['limit'] ) : 18446744073709551615;
+				$offset    = isset( $params['offset'] ) ? intval( $params['offset'] ) : 0;
+				$sql    .= $wpdb->prepare( ' LIMIT %d, %d', ($offset-1)*$limit, $limit );
+			}
 		}
 
 		return $wpdb->get_results($sql);
