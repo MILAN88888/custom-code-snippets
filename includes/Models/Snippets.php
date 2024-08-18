@@ -56,7 +56,26 @@ class Snippets {
 		$sql = "SELECT * FROM {$wpdb->prefix}ccsnpt_snippets";
 		if(isset($params['id']) && !empty($params['id'])) {
 			$sql .= $wpdb->prepare(' WHERE id = %d', $params['id']);
+		}else {
+			$where_clause = array();
+			if(isset($params['searchByItem']) && !empty($params['searchByItem'])) {
+				$like_item ='%'.$params['searchByItem'].'%';
+
+				$where_clause[]= $wpdb->prepare(' `title`LIKE %s OR `description`LIKE %s OR `tags` LIKE %s', $like_item, $like_item, $like_item);
+			}
+
+			if (isset($params['startDate']) && isset($params['endDate'])) {
+				$start_date = empty($params['startDate']) ? date('Y-m-d') : date('Y-m-d', strtotime($params['startDate']));
+				$end_date = empty($params['endDate']) ? date('Y-m-d') : date('Y-m-d', strtotime($params['endDate']));
+				$where_clause[] = $wpdb->prepare(' `updated_at` BETWEEN %s AND %s', $start_date, $end_date);
+			}
+
+			if(!empty($where_clause)){
+				$sql .= ' WHERE';
+				$sql .= implode(' AND ', $where_clause);
+			}
 		}
+
 		return $wpdb->get_results($sql);
 	}
 	/**

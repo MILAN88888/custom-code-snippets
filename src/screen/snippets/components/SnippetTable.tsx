@@ -27,11 +27,33 @@ import { BiEdit } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import SnippetFilter from "./SnippetFilter";
 
+interface params {
+  searchByItem?: string;
+  startDate?: string;
+  endDate?: string;
+}
 const SnippetTable: React.FC = () => {
-  const [params, setParams] = useState({
+  const currentDate = new Date();
+
+  const startDate = new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth(),
+    1
+  )
+    .toISOString()
+    .split("T")[0];
+
+  const endDate = new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth() + 1,
+    0
+  )
+    .toISOString()
+    .split("T")[0];
+  const [params, setParams] = useState<params>({
     searchByItem: "",
-    startDate: "",
-    endDate: ""
+    startDate: startDate,
+    endDate: endDate
   });
   const toast = useToast();
   const navigate = useNavigate();
@@ -39,8 +61,7 @@ const SnippetTable: React.FC = () => {
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["snippets", params],
-    queryFn: () => getSnippets(params),
-    keepPreviousData: true // This keeps the previous data while the query is being re-fetched
+    queryFn: getSnippets
   });
 
   const statusMutation = useMutation({
@@ -48,7 +69,7 @@ const SnippetTable: React.FC = () => {
     onSuccess: (res: any) => {
       if (res === false) {
         toast({
-          title: __("Update failed", "custom-code-snippets"),
+          title: __("Update failed!!", "custom-code-snippets"),
           status: "error"
         });
       } else {
@@ -61,7 +82,7 @@ const SnippetTable: React.FC = () => {
           isClosable: true
         });
       }
-      queryClient.invalidateQueries(["snippets"]);
+      queryClient.invalidateQueries({ queryKey: ["snippets", params] });
     },
     onError: (error) => {
       toast({
@@ -89,7 +110,7 @@ const SnippetTable: React.FC = () => {
           isClosable: true
         });
       }
-      queryClient.invalidateQueries(["snippets"]);
+      queryClient.invalidateQueries({ queryKey: ["snippets", params] });
     },
     onError: (error) => {
       toast({
@@ -100,14 +121,6 @@ const SnippetTable: React.FC = () => {
       });
     }
   });
-
-  if (isLoading) {
-    return (
-      <Center>
-        <Spinner size="xl" />
-      </Center>
-    );
-  }
 
   if (isError) {
     return (
@@ -142,79 +155,90 @@ const SnippetTable: React.FC = () => {
       >
         <SnippetFilter params={params} setParams={setParams} />
       </Stack>
-      <Stack
-        p={4}
-        bg="white"
-        borderRadius="md"
-        boxShadow="0px 0px 10px rgba(0, 0, 0, 0.1)"
-      >
-        <Table>
-          <Thead>
-            <Tr>
-              <Th>
-                <Checkbox name="select" value="all" />
-              </Th>
-              <Th>{__("Title", "custom-code-snippets")}</Th>
-              <Th>{__("Description", "custom-code-snippets")}</Th>
-              <Th>{__("Tags", "custom-code-snippets")}</Th>
-              <Th>{__("Updated At", "custom-code-snippets")}</Th>
-              <Th>{__("Priority", "custom-code-snippets")}</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {data && data.length > 0 ? (
-              data.map((snippet: any, index: number) => (
-                <Tr key={index}>
-                  <Td width="50px">
-                    <Checkbox data-id={snippet.id} />
-                  </Td>
-                  <Td>
-                    <Stack direction="column">
-                      <Text>{snippet.title}</Text>
-                      <Stack direction="row" gap="24px">
-                        <Switch
-                          size="sm"
-                          isChecked={snippet.active === "1"}
-                          onChange={() =>
-                            statusToggler({
-                              id: snippet.id,
-                              active: snippet.active
-                            })
-                          }
-                        />
-                        <BiEdit
-                          onClick={() => editSnippet(snippet.id)}
-                          cursor="pointer"
-                          style={{ fontSize: "16px" }}
-                        />
-                        <RiDeleteBinFill
-                          onClick={() => deleteSnippet(snippet.id)}
-                          cursor="pointer"
-                          style={{ fontSize: "16px" }}
-                        />
-                      </Stack>
-                    </Stack>
-                  </Td>
-                  <Td>{snippet.description}</Td>
-                  <Td>{snippet.tags}</Td>
-                  <Td>{snippet.updated_at}</Td>
-                  <Td>{snippet.priority}</Td>
-                </Tr>
-              ))
-            ) : (
+      {isLoading ? (
+        <Stack
+          direction="row"
+          height="300px"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Spinner size="sm" />
+        </Stack>
+      ) : (
+        <Stack
+          p={4}
+          bg="white"
+          borderRadius="md"
+          boxShadow="0px 0px 10px rgba(0, 0, 0, 0.1)"
+        >
+          <Table>
+            <Thead>
               <Tr>
-                <Td colSpan={8}>
-                  <Center>
-                    <Text>
-                      {__("No snippets found", "custom-code-snippets")}
-                    </Text>
-                  </Center>
-                </Td>
+                <Th>
+                  <Checkbox name="select" value="all" />
+                </Th>
+                <Th>{__("Title", "custom-code-snippets")}</Th>
+                <Th>{__("Description", "custom-code-snippets")}</Th>
+                <Th>{__("Tags", "custom-code-snippets")}</Th>
+                <Th>{__("Updated At", "custom-code-snippets")}</Th>
+                <Th>{__("Priority", "custom-code-snippets")}</Th>
               </Tr>
-            )}
-          </Tbody>
-        </Table>
-      </Stack>
+            </Thead>
+            <Tbody>
+              {data && data.length > 0 ? (
+                data.map((snippet: any, index: number) => (
+                  <Tr key={index}>
+                    <Td width="50px">
+                      <Checkbox data-id={snippet.id} />
+                    </Td>
+                    <Td>
+                      <Stack direction="column">
+                        <Text>{snippet.title}</Text>
+                        <Stack direction="row" gap="24px">
+                          <Switch
+                            size="sm"
+                            isChecked={snippet.active === "1"}
+                            onChange={() =>
+                              statusToggler({
+                                id: snippet.id,
+                                active: snippet.active
+                              })
+                            }
+                          />
+                          <BiEdit
+                            onClick={() => editSnippet(snippet.id)}
+                            cursor="pointer"
+                            style={{ fontSize: "16px" }}
+                          />
+                          <RiDeleteBinFill
+                            onClick={() => deleteSnippet(snippet.id)}
+                            cursor="pointer"
+                            style={{ fontSize: "16px" }}
+                          />
+                        </Stack>
+                      </Stack>
+                    </Td>
+                    <Td>{snippet.description}</Td>
+                    <Td>{snippet.tags}</Td>
+                    <Td>{snippet.updated_at}</Td>
+                    <Td>{snippet.priority}</Td>
+                  </Tr>
+                ))
+              ) : (
+                <Tr>
+                  <Td colSpan={8}>
+                    <Center>
+                      <Text>
+                        {__("No snippets found", "custom-code-snippets")}
+                      </Text>
+                    </Center>
+                  </Td>
+                </Tr>
+              )}
+            </Tbody>
+          </Table>
+        </Stack>
+      )}
       <Stack
         p={4}
         bg="white"

@@ -15,7 +15,9 @@ export const addNewSnippet = async (addNewData: any) => {
 };
 
 export const getSnippets = async ({ queryKey }: any) => {
-  const queryString = buildQueryString(queryKey ? queryKey[0] : "");
+  const [, params] = queryKey;
+
+  const queryString = buildQueryString(params ? params : "");
 
   return apiFetch({
     path: `${ENDPOINTS.GetSnippets}?${queryString}`,

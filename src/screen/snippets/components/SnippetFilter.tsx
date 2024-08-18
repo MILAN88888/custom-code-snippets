@@ -6,23 +6,23 @@ import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { DateRangePicker, RangeKeyDict } from "react-date-range";
 
-// Define the type for the date range
 interface DateRange {
-  startDate: Date;
-  endDate: Date;
-  key: string;
+  startDate?: Date;
+  endDate?: Date;
+  key?: string;
 }
-
 interface SnippetFilterProps {
-  params: Record<string, any>; // Adjusted to a more general type, you can refine it based on actual params structure
+  params: Record<string, any>;
   setParams: (params: Record<string, any>) => void;
 }
 
 const SnippetFilter: React.FC<SnippetFilterProps> = ({ params, setParams }) => {
-  const [searchByItem, setSearchByItem] = useState<string>("");
+  const [searchByItem, setSearchByItem] = useState<string>(
+    params?.searchByItem
+  );
   const [dateRange, setDateRange] = useState<DateRange>({
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: new Date(params?.startDate),
+    endDate: new Date(params?.endDate),
     key: "selection"
   });
   const [isPickerVisible, setIsPickerVisible] = useState<boolean>(false);
@@ -31,6 +31,13 @@ const SnippetFilter: React.FC<SnippetFilterProps> = ({ params, setParams }) => {
 
   const handleSelect = (ranges: RangeKeyDict) => {
     const { selection } = ranges;
+    const formattedStartDate = selection.startDate
+      ? selection.startDate.toISOString().split("T")[0]
+      : "";
+    const formattedEndDate = selection.endDate
+      ? selection.endDate.toISOString().split("T")[0]
+      : "";
+
     setDateRange({
       startDate: selection.startDate,
       endDate: selection.endDate,
@@ -38,19 +45,17 @@ const SnippetFilter: React.FC<SnippetFilterProps> = ({ params, setParams }) => {
     });
     setParams({
       ...params,
-      startDate: selection.startDate,
-      endDate: selection.endDate
+      startDate: formattedStartDate,
+      endDate: formattedEndDate
     });
     setIsPickerVisible(false);
   };
 
   useEffect(() => {
-    if (searchByItemValue) {
-      setParams((prevParams) => ({
-        ...prevParams,
-        searchByItem: searchByItemValue
-      }));
-    }
+    setParams(() => ({
+      ...params,
+      searchByItem: searchByItemValue
+    }));
   }, [searchByItemValue, setParams]);
 
   return (
@@ -67,7 +72,7 @@ const SnippetFilter: React.FC<SnippetFilterProps> = ({ params, setParams }) => {
         border="1px solid gray.100"
         type="text"
         w="300px"
-        value={`${dateRange.startDate.toLocaleDateString()} - ${dateRange.endDate.toLocaleDateString()}`}
+        value={`${dateRange?.startDate?.toLocaleDateString()} - ${dateRange?.endDate?.toLocaleDateString()}`}
         placeholder={__("Select date range", "easy-mail-smtp")}
         readOnly
         onClick={() => setIsPickerVisible(true)}
@@ -78,7 +83,6 @@ const SnippetFilter: React.FC<SnippetFilterProps> = ({ params, setParams }) => {
           onChange={handleSelect}
           moveRangeOnFirstSelection={false}
           editableDateInputs={true}
-          onCalendarClose={() => setIsPickerVisible(false)}
         />
       )}
     </Stack>
