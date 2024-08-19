@@ -54,8 +54,15 @@ class Snippets {
 		global $wpdb;
 
 		$sql = "SELECT * FROM {$wpdb->prefix}ccsnpt_snippets";
+		$count_sql = "SELECT COUNT(*) FROM {$wpdb->prefix}ccsnpt_snippets";
 		if(isset($params['id']) && !empty($params['id'])) {
 			$sql .= $wpdb->prepare(' WHERE id = %d', $params['id']);
+			$results = $wpdb->get_results($sql);
+
+			return array(
+				'results' => $results,
+				'total_count' => 1,
+			);
 		}else {
 			$where_clause = array();
 			if(isset($params['searchByItem']) && !empty($params['searchByItem'])) {
@@ -71,9 +78,12 @@ class Snippets {
 			}
 
 			if(!empty($where_clause)){
-				$sql .= ' WHERE';
-				$sql .= implode(' AND ', $where_clause);
+				$where_sql = ' WHERE ' . implode(' AND ', $where_clause);
+       			$sql .= $where_sql;
+       			$count_sql .= $where_sql;
 			}
+
+			$total_count = $wpdb->get_var($count_sql);
 
 			if ( isset( $params['limit'] ) || isset( $params['offset'] ) ) {
 				$limit = isset( $params['limit'] ) ? intval( $params['limit'] ) : 18446744073709551615;
@@ -82,7 +92,12 @@ class Snippets {
 			}
 		}
 
-		return $wpdb->get_results($sql);
+		$results = $wpdb->get_results($sql);
+
+		return array(
+			'results' => $results,
+			'total_count' => $total_count,
+		);
 	}
 	/**
 	 * Update the snippet status.

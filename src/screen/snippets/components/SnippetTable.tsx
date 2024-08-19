@@ -59,8 +59,6 @@ const SnippetTable: React.FC = () => {
     limit: 10
   });
 
-  const [totalPages, setTotalPages] = useState<number>(10);
-
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["snippets", params],
     queryFn: getSnippets
@@ -150,8 +148,9 @@ const SnippetTable: React.FC = () => {
   const paginationProps = {
     params,
     setParams,
-    totalPages
+    totalPages: data ? Math.ceil(Number(data.total_count) / params.limit) : 10
   };
+
   return (
     <Stack direction="column" gap="2px">
       <Stack
@@ -192,8 +191,8 @@ const SnippetTable: React.FC = () => {
               </Tr>
             </Thead>
             <Tbody>
-              {data && data.length > 0 ? (
-                data.map((snippet: any, index: number) => (
+              {data.results && data.results.length > 0 ? (
+                data.results.map((snippet: any, index: number) => (
                   <Tr key={index}>
                     <Td width="50px">
                       <Checkbox data-id={snippet.id} />
@@ -254,7 +253,7 @@ const SnippetTable: React.FC = () => {
         direction="column"
         justifyItems="flex-end"
       >
-        <SnippetPagination {...paginationProps} />
+        {data ? <SnippetPagination {...paginationProps} /> : ""}
       </Stack>
     </Stack>
   );
