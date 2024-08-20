@@ -18,7 +18,7 @@ const Header = () => {
         <Box height="35px">
           <HStack gap="16px">
             <Image
-              src={"./../../images/icon.svg"}
+              src={"./../images/icon.svg"}
               width="29.67px"
               height="27.24px"
               top="3.65px"
@@ -26,7 +26,7 @@ const Header = () => {
             />
             <Heading
               fontWeight="600"
-              size="20px"
+              fontSize="20px"
               lineHeight="8px"
               color="dark.500"
               letterSpacing="0.5px"

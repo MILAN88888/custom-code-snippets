@@ -23,6 +23,19 @@ module.exports = {
         }
       },
       {
+        test: /\.(bmp|gif|jpe?g|png|svg|webp)$/,
+        use: [
+          {
+            loader: "url-loader",
+            options: {
+              limit: 15000,
+              name: "static/media/[name].[hash:8].[ext]",
+              fallback: "file-loader"
+            }
+          }
+        ]
+      },
+      {
         test: /\.css$/,
         use: [MiniCssExtractPlugin.loader, "css-loader"]
       },

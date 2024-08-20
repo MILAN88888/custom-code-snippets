@@ -30,17 +30,13 @@ class Menus {
 	 * Add menu items.
 	 */
 	public function add_menu() {
-			$svg = '<svg width="800px" height="800px" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-	<title>custom-code-snippets</title>
-	<g id="Layer_2" data-name="Layer 2">
-		<g id="icons_Q2" data-name="icons Q2" fill="#27F5AE">
-		<g>
-			<path d="M41,6H7A2,2,0,0,0,5,8V32a2,2,0,0,0,2,2H41a2,2,0,0,0,2-2V8A2,2,0,0,0,41,6ZM21.4,24.6a1.9,1.9,0,0,1-.2,3,2,2,0,0,1-2.7-.3l-5.9-5.9a1.9,1.9,0,0,1,0-2.8l5.9-6a2.3,2.3,0,0,1,2.7-.3,2,2,0,0,1,.2,3.1L16.8,20Zm14-3.2-5.9,5.9a2,2,0,0,1-2.7.3,1.9,1.9,0,0,1-.2-3L31.2,20l-4.6-4.6a2,2,0,0,1,.2-3.1,2.3,2.3,0,0,1,2.7.3l5.9,6A1.9,1.9,0,0,1,35.4,21.4Z"/>
-			<path d="M44,38H4a2,2,0,0,0,0,4H44a2,2,0,0,0,0-4Z"/>
-		</g>
-		</g>
-	</g>
-	</svg>';
+			$svg = '<svg enable-background="new 0 0 32 32" height="32px" id="svg2" version="1.1" viewBox="0 0 32 32" width="32px" xmlns="http://www.w3.org/2000/svg">
+  <g id="sourcecode">
+    <polygon points="22,22 22,26 32,16 22,6 22,10 28,16" fill="#FF0000"/>
+    <polygon points="10,22 10,26 0,16 10,6 10,10 4,16" fill="#0000FF"/>
+    <polygon points="10,20 14,20 22,12 18,12" fill="#00FF00"/>
+  </g>
+</svg>';
 		$base64_svg = 'data:image/svg+xml;base64,' . base64_encode($svg); // phpcs:ignore
 		add_menu_page( esc_html__( 'Custom Code Snippets', 'custom-code-snippets' ), esc_html__( 'Code Snippets', 'custom-code-snippets' ), 'manage_options', 'custom-code-snippets', array( $this, 'main_page' ), $base64_svg );
 	}
