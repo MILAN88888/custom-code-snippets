@@ -45,6 +45,21 @@ export const theme = extendTheme({
       baseStyle: {
         margin: 0
       }
+    },
+    Switch: {
+      baseStyle: {
+        track: {
+          _checked: {
+            bg: "#2563eb",
+            borderColor: "#2563eb"
+          }
+        },
+        thumb: {
+          _checked: {
+            bg: "white"
+          }
+        }
+      }
     }
   }
 });
