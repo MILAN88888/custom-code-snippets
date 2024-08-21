@@ -1,6 +1,6 @@
 import React from "react";
 import { __ } from "@wordpress/i18n";
-import { HStack, Box, Text } from "@chakra-ui/react";
+import { Box, Text, Stack } from "@chakra-ui/react";
 import { NavLink } from "react-router-dom";
 
 const Menus: React.FC = () => {
@@ -16,26 +16,31 @@ const Menus: React.FC = () => {
   ];
 
   return (
-    <HStack gap="32px" ml="100px">
+    <Stack gap="36px" ml="100px" direction="row" alignItems="center">
       {menus.map((menu) => (
         <Box
           as={NavLink}
           to={menu.route}
           key={menu.route}
-          style={({ isActive }: any) => ({
-            fontWeight: isActive ? "bold" : "normal",
-            color: isActive ? "#2563eb" : "inherit",
-          })}
-          _focus={{
-            boxShadow: "none"
+          display="flex"
+          alignItems="center"
+          height="80px"
+          _focus={{ boxShadow: "none" }}
+          _hover={{ textDecoration: "none", boxShadow: "sm" }}
+          sx={{
+            "&.active": {
+              fontWeight: "bold",
+              color: "#2563eb",
+              borderBottom: "3px solid #2563eb"
+            }
           }}
         >
-          <Text fontWeight="600" letterSpacing="0.5px">
+          <Text fontWeight="400" fontSize="14px" lineHeight="6px">
             {menu.label}
           </Text>
         </Box>
       ))}
-    </HStack>
+    </Stack>
   );
 };
 

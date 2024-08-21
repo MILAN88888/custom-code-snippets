@@ -183,11 +183,31 @@ const SnippetTable: React.FC = () => {
                 <Th>
                   <Checkbox name="select" value="all" />
                 </Th>
-                <Th>{__("Title", "custom-code-snippets")}</Th>
-                <Th>{__("Description", "custom-code-snippets")}</Th>
-                <Th>{__("Tags", "custom-code-snippets")}</Th>
-                <Th>{__("Updated At", "custom-code-snippets")}</Th>
-                <Th>{__("Priority", "custom-code-snippets")}</Th>
+                <Th>
+                  <Text fontWeight="600" fontSize="13px" lineHeight="24px">
+                    {__("Title", "custom-code-snippets")}
+                  </Text>
+                </Th>
+                <Th>
+                  <Text fontWeight="600" fontSize="13px" lineHeight="24px">
+                    {__("Description", "custom-code-snippets")}
+                  </Text>
+                </Th>
+                <Th>
+                  <Text fontWeight="600" fontSize="13px" lineHeight="24px">
+                    {__("Tags", "custom-code-snippets")}
+                  </Text>
+                </Th>
+                <Th>
+                  <Text fontWeight="600" fontSize="13px" lineHeight="24px">
+                    {__("Updated At", "custom-code-snippets")}
+                  </Text>
+                </Th>
+                <Th>
+                  <Text fontWeight="600" fontSize="13px" lineHeight="24px">
+                    {__("Priority", "custom-code-snippets")}
+                  </Text>
+                </Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -199,7 +219,14 @@ const SnippetTable: React.FC = () => {
                     </Td>
                     <Td>
                       <Stack direction="column">
-                        <Text>{snippet.title}</Text>
+                        <Text
+                          fontWeight="400"
+                          fontSize="14px"
+                          lineHeight="24px"
+                          color="secondary.900"
+                        >
+                          {snippet.title}
+                        </Text>
                         <Stack direction="row" gap="24px">
                           <Switch
                             size="sm"
@@ -224,10 +251,46 @@ const SnippetTable: React.FC = () => {
                         </Stack>
                       </Stack>
                     </Td>
-                    <Td>{snippet.description}</Td>
-                    <Td>{snippet.tags}</Td>
-                    <Td>{snippet.updated_at}</Td>
-                    <Td>{snippet.priority}</Td>
+                    <Td>
+                      <Text
+                        fontWeight="400"
+                        fontSize="14px"
+                        lineHeight="24px"
+                        color="secondary.900"
+                      >
+                        {snippet.description}{" "}
+                      </Text>
+                    </Td>
+                    <Td>
+                      <Text
+                        fontWeight="400"
+                        fontSize="14px"
+                        lineHeight="24px"
+                        color="secondary.900"
+                      >
+                        {snippet.tags}
+                      </Text>
+                    </Td>
+                    <Td>
+                      <Text
+                        fontWeight="400"
+                        fontSize="14px"
+                        lineHeight="24px"
+                        color="secondary.900"
+                      >
+                        {snippet.updated_at}
+                      </Text>
+                    </Td>
+                    <Td>
+                      <Text
+                        fontWeight="400"
+                        fontSize="14px"
+                        lineHeight="24px"
+                        color="secondary.900"
+                      >
+                        {snippet.priority}
+                      </Text>
+                    </Td>
                   </Tr>
                 ))
               ) : (

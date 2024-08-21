@@ -14,29 +14,25 @@ const Header = () => {
       bg="white"
       height="80px"
       boxShadow="0px 0px 10px rgba(0, 0, 0, 0.1)"
+	  direction="row"
     >
       <Stack direction="row" justify="space-between" alignItems="center">
-        <Box height="35px">
-          <HStack gap="16px">
-            <Image
-              src={icon}
-              width="29.67px"
-              height="27.24px"
-              top="3.65px"
-              left="1.95px"
-            />
-            <Heading
-              fontWeight="600"
-              fontSize="20px"
-              lineHeight="8px"
-              color="dark.500"
-              letterSpacing="0.5px"
-            >
-              {__("Custom Code Snippets", "custom-code-snippets")}
-            </Heading>
-            <Menus />
-          </HStack>
-        </Box>
+        <Stack gap="16px" direction="row" alignItems="center">
+          <Image
+            src={icon}
+          />
+          <Heading
+            as="h6"
+            fontWeight="600"
+            fontSize="20px"
+            lineHeight="8px"
+            color="dark.500"
+            letterSpacing="0.5px"
+          >
+            {__("Custom Code Snippets", "custom-code-snippets")}
+          </Heading>
+          <Menus />
+        </Stack>
       </Stack>
     </Stack>
   );
