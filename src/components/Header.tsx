@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Heading, HStack, Image, Stack } from "@chakra-ui/react";
 import { __ } from "@wordpress/i18n";
 import Menus from "./Menus";
+import icon from "./../images/icon.svg";
 
 const Header = () => {
   return (
@@ -18,7 +19,7 @@ const Header = () => {
         <Box height="35px">
           <HStack gap="16px">
             <Image
-              src={"./../images/icon.svg"}
+              src={icon}
               width="29.67px"
               height="27.24px"
               top="3.65px"
