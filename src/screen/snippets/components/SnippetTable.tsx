@@ -15,7 +15,7 @@ import {
   Box
 } from "@chakra-ui/react";
 import { __ } from "@wordpress/i18n";
-import React, { useEffect, useState } from "react";
+import React, { MouseEvent, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   deleteSnippets,
@@ -27,12 +27,14 @@ import { BiEdit } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import SnippetFilter from "./SnippetFilter";
 import SnippetPagination from "./SnippetPagination";
-import { SnippetParams } from "./../../../types/index";
+import { GetSnippetsResponse, SnippetParams } from "./../../../types/index";
 
 const SnippetTable: React.FC = () => {
   const toast = useToast();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+
+  const [selectAll, setSelectAll] = useState(false);
 
   const currentDate = new Date();
 
@@ -58,10 +60,17 @@ const SnippetTable: React.FC = () => {
     offset: 1,
     limit: 10
   });
+  const onClickSelectAll = (e: MouseEvent<HTMLInputElement>) => {
+    const { checked } = e.currentTarget;
+    setSelectAll(checked);
+  };
 
-  const { data, isLoading, isError, error } = useQuery({
+  const { data, isLoading, isError, error } = useQuery<GetSnippetsResponse>({
     queryKey: ["snippets", params],
-    queryFn: getSnippets
+    queryFn: () => getSnippets(params),
+    onSuccess: (res: GetSnippetsResponse) => {
+      console.log(res);
+    }
   });
 
   const statusMutation = useMutation({
@@ -121,7 +130,6 @@ const SnippetTable: React.FC = () => {
       });
     }
   });
-
   if (isError) {
     return (
       <Center>
@@ -181,7 +189,11 @@ const SnippetTable: React.FC = () => {
             <Thead>
               <Tr>
                 <Th>
-                  <Checkbox name="select" value="all" />
+                  <Checkbox
+                    name="select"
+                    onClick={onClickSelectAll}
+                    isChecked={selectAll}
+                  />
                 </Th>
                 <Th>
                   <Text fontWeight="600" fontSize="13px" lineHeight="24px">

@@ -29,8 +29,28 @@ export type BackendErrors = {
     limit?: number;
   };
 
-  export type SnippetPagiProps = {
-    params: SnippetParams;
-    setParams: (params: SnippetParams) => void;
-    totalPages: number;
-  };
+export type SnippetPagiProps = {
+  params: SnippetParams;
+  setParams: (params: SnippetParams) => void;
+  totalPages: number;
+};
+
+export type GetSnippetsResponse = {
+  results: [
+    {
+      id: number | string;
+      title: string;
+      description: string;
+      codesnippet: string;
+      tags: string;
+      scope?: string;
+      priority: number;
+      active: boolean | number;
+      created_at?: string;
+      created_by?: string;
+      updated_at?: string;
+      updated_by?: string;
+    }
+  ];
+  total_count: number;
+};
