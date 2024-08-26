@@ -92,6 +92,11 @@ const SnippetTable: React.FC = () => {
     }
   }, [isCheck]);
 
+  useEffect(() => {
+    if ("delete" === bulkAction) {
+      deleteMutation.mutate(isCheck);
+    }
+  }, [bulkAction]);
 
   useEffect(() => {
     if (data) {
@@ -144,6 +149,7 @@ const SnippetTable: React.FC = () => {
           duration: 3000,
           isClosable: true
         });
+        onClose();
       }
       queryClient.invalidateQueries({ queryKey: ["snippets", params] });
     },
