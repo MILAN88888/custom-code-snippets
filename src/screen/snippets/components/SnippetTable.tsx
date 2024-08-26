@@ -11,7 +11,8 @@ import {
   Text,
   Checkbox,
   Switch,
-  useToast
+  useToast,
+  useDisclosure
 } from "@chakra-ui/react";
 import { __ } from "@wordpress/i18n";
 import React, { useEffect, useState } from "react";
@@ -27,15 +28,18 @@ import { useNavigate } from "react-router-dom";
 import SnippetFilter from "./SnippetFilter";
 import SnippetPagination from "./SnippetPagination";
 import { GetSnippetsResponse, SnippetParams } from "./../../../types/index";
+import FloatingBulkAction from "./../../../components/common/FloatingBulkAction";
 
 const SnippetTable: React.FC = () => {
   const toast = useToast();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const [isCheckAll, setIsCheckAll] = useState(false);
   const [list, setList] = useState<(string | number)[]>([]);
   const [isCheck, setIsCheck] = useState<(string | number)[]>([]);
+  const [bulkAction, setBulkAction] = useState("");
 
   const currentDate = new Date();
 
@@ -64,6 +68,7 @@ const SnippetTable: React.FC = () => {
   const onClickCheckAll = () => {
     setIsCheckAll(!isCheckAll);
     setIsCheck(!isCheckAll ? list : []);
+    onOpen();
   };
 
   const handleClick = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,12 +78,20 @@ const SnippetTable: React.FC = () => {
     setIsCheck((prev) =>
       checked ? [...prev, id] : prev.filter((item) => item !== id)
     );
+    onOpen();
   };
 
   const { data, isLoading, isError, error } = useQuery<GetSnippetsResponse>({
     queryKey: ["snippets", params],
     queryFn: () => getSnippets(params)
   });
+
+  useEffect(() => {
+    if (isCheck.length === 0) {
+      onClose();
+    }
+  }, [isCheck]);
+
 
   useEffect(() => {
     if (data) {
@@ -345,6 +358,15 @@ const SnippetTable: React.FC = () => {
       >
         {data && <SnippetPagination {...paginationProps} />}
       </Stack>
+      {isOpen && (
+        <FloatingBulkAction
+          openToast={onOpen}
+          bulkIds={isCheck}
+          setIsCheckAll={setIsCheckAll}
+          setBulkIds={setIsCheck}
+          setBulkAction={setBulkAction}
+        />
+      )}
     </Stack>
   );
 };
