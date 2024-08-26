@@ -26,7 +26,7 @@ export type BackendErrors = {
     startDate?: string;
     endDate?: string;
     offset: number;
-    limit?: number;
+    limit: number;
   };
 
 export type SnippetPagiProps = {

@@ -11,11 +11,10 @@ import {
   Text,
   Checkbox,
   Switch,
-  useToast,
-  Box
+  useToast
 } from "@chakra-ui/react";
 import { __ } from "@wordpress/i18n";
-import React, { MouseEvent, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   deleteSnippets,
@@ -34,7 +33,9 @@ const SnippetTable: React.FC = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const [selectAll, setSelectAll] = useState(false);
+  const [isCheckAll, setIsCheckAll] = useState(false);
+  const [list, setList] = useState<(string | number)[]>([]);
+  const [isCheck, setIsCheck] = useState<(string | number)[]>([]);
 
   const currentDate = new Date();
 
@@ -60,18 +61,30 @@ const SnippetTable: React.FC = () => {
     offset: 1,
     limit: 10
   });
-  const onClickSelectAll = (e: MouseEvent<HTMLInputElement>) => {
-    const { checked } = e.currentTarget;
-    setSelectAll(checked);
+  const onClickCheckAll = () => {
+    setIsCheckAll(!isCheckAll);
+    setIsCheck(!isCheckAll ? list : []);
+  };
+
+  const handleClick = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, checked } = e.target;
+    setIsCheckAll(false);
+
+    setIsCheck((prev) =>
+      checked ? [...prev, id] : prev.filter((item) => item !== id)
+    );
   };
 
   const { data, isLoading, isError, error } = useQuery<GetSnippetsResponse>({
     queryKey: ["snippets", params],
-    queryFn: () => getSnippets(params),
-    onSuccess: (res: GetSnippetsResponse) => {
-      console.log(res);
-    }
+    queryFn: () => getSnippets(params)
   });
+
+  useEffect(() => {
+    if (data) {
+      setList(data.results.map((result) => result.id));
+    }
+  }, [data]);
 
   const statusMutation = useMutation({
     mutationFn: updateStatusSnippets,
@@ -189,11 +202,7 @@ const SnippetTable: React.FC = () => {
             <Thead>
               <Tr>
                 <Th>
-                  <Checkbox
-                    name="select"
-                    onClick={onClickSelectAll}
-                    isChecked={selectAll}
-                  />
+                  <Checkbox onChange={onClickCheckAll} isChecked={isCheckAll} />
                 </Th>
                 <Th>
                   <Text fontWeight="600" fontSize="13px" lineHeight="24px">
@@ -227,7 +236,13 @@ const SnippetTable: React.FC = () => {
                 data.results.map((snippet: any, index: number) => (
                   <Tr key={index}>
                     <Td width="50px">
-                      <Checkbox data-id={snippet.id} />
+                      <Checkbox
+                        key={snippet.id}
+                        type="checkbox"
+                        id={snippet.id}
+                        onChange={(e) => handleClick(e)}
+                        isChecked={isCheck.includes(snippet.id)}
+                      />
                     </Td>
                     <Td>
                       <Stack direction="column">
@@ -328,7 +343,7 @@ const SnippetTable: React.FC = () => {
         direction="column"
         justifyItems="flex-end"
       >
-        {data ? <SnippetPagination {...paginationProps} /> : ""}
+        {data && <SnippetPagination {...paginationProps} />}
       </Stack>
     </Stack>
   );
