@@ -54,3 +54,11 @@ export type GetSnippetsResponse = {
   ];
   total_count: number;
 };
+
+export type BulkActionProps = {
+  openToast: () => void;
+  setBulkAction?: (value: any) => void;
+  bulkIds: (string | number)[];
+  setBulkIds: (value: string[]) => void;
+  setIsCheckAll: (value: boolean) => void;
+};
