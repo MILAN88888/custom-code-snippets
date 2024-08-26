@@ -22,11 +22,12 @@ export type BackendErrors = {
   };
 
   export type SnippetParams = {
+    id?: number;
     searchByItem?: string;
     startDate?: string;
     endDate?: string;
-    offset: number;
-    limit: number;
+    offset?: number;
+    limit?: number;
   };
 
 export type SnippetPagiProps = {

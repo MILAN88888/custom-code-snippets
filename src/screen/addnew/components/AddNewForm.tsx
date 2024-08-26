@@ -78,13 +78,13 @@ const AddNewForm: React.FC<AddNewFormProps> = ({ id }) => {
 
   const { data } = useQuery({
     queryKey: [{ id }],
-    queryFn: getSnippets,
+    queryFn: () => getSnippets({ id }),
     enabled: !!id
   });
 
   useEffect(() => {
     if (data) {
-      const snippet = (data as any)[0];
+      const snippet = data.results[0];
       Object.keys(snippet).forEach((key) => {
         setValue(key as keyof AddNew, snippet[key]);
       });
