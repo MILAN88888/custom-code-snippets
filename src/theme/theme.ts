@@ -60,6 +60,17 @@ export const theme = extendTheme({
           }
         }
       }
+    },
+    Checkbox: {
+      baseStyle: {
+        control: {
+          _checked: {
+            bg: "#2563eb",
+            borderColor: "#2563eb",
+            color: "white"
+          }
+        }
+      }
     }
   }
 });
