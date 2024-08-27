@@ -5,6 +5,7 @@ import { useDebounce } from "./../../../hooks/index";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { DateRangePicker, RangeKeyDict } from "react-date-range";
+import Select from "react-select";
 
 interface DateRange {
   startDate?: Date;
@@ -85,6 +86,61 @@ const SnippetFilter: React.FC<SnippetFilterProps> = ({ params, setParams }) => {
           editableDateInputs={true}
         />
       )}
+      <Select
+        options={[
+          {
+            label: __("Active", "custom-code-snippets"),
+            value: "1"
+          },
+          {
+            label: __("Inactive", "custom-code-snippets"),
+            value: "0"
+          }
+        ]}
+        onChange={(option) => {
+          option && setParams({ ...params, status: option?.value });
+        }}
+        placeholder={__("Search by status", "custom-code-snippets")}
+        isClearable
+        isSearchable={false}
+        styles={{
+          control: (provided) => ({
+            ...provided,
+            width: "300px",
+            height: "40px",
+            borderColor: "#8c8f94",
+            borderWidth: "1px",
+            borderRadius: "4px",
+            fontSize: "16px",
+            padding: "0 8px",
+            boxShadow: "none",
+            "&:hover": {
+              borderColor: "#CBD5E0"
+            }
+          }),
+          valueContainer: (provided) => ({
+            ...provided,
+            height: "40px",
+            padding: "0 8px"
+          }),
+          input: (provided) => ({
+            ...provided,
+            margin: "0px",
+            padding: "0px"
+          }),
+          placeholder: (provided) => ({
+            ...provided
+          }),
+          indicatorsContainer: (provided) => ({
+            ...provided,
+            height: "40px"
+          }),
+          singleValue: (provided) => ({
+            ...provided,
+            color: "#2D3748"
+          })
+        }}
+      />
     </Stack>
   );
 };

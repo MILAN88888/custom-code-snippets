@@ -28,6 +28,7 @@ export type BackendErrors = {
     endDate?: string;
     offset?: number;
     limit?: number;
+    status?: string | number;
   };
 
 export type SnippetPagiProps = {

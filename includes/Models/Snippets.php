@@ -76,6 +76,10 @@ class Snippets {
 				$end_date = empty($params['endDate']) ? date('Y-m-d') : date('Y-m-d', strtotime($params['endDate']));
 				$where_clause[] = $wpdb->prepare(' `updated_at` BETWEEN %s AND %s', $start_date, $end_date);
 			}
+			if(isset($params['status'])) {
+				$status = $params['status'];
+				$where_clause[] = $wpdb->prepare(' `active` = %s', $status);
+			}
 
 			if(!empty($where_clause)){
 				$where_sql = ' WHERE ' . implode(' AND ', $where_clause);
