@@ -1,6 +1,6 @@
-import React, { forwardRef, useImperativeHandle, useRef } from 'react';
-import Editor, { EditorProps } from '@monaco-editor/react';
-import { editor as MonacoEditor } from 'monaco-editor';
+import React, { forwardRef, useImperativeHandle, useRef } from "react";
+import Editor, { EditorProps } from "@monaco-editor/react";
+import { editor as MonacoEditor } from "monaco-editor";
 
 interface CodeMirrorEditorProps extends EditorProps {
   onMount?: (editor: MonacoEditor.IStandaloneCodeEditor) => void;
@@ -10,7 +10,10 @@ export interface CodeMirrorEditorHandle {
   editor: MonacoEditor.IStandaloneCodeEditor | null;
 }
 
-const CodeMirrorEditor = forwardRef<CodeMirrorEditorHandle, CodeMirrorEditorProps>((props, ref) => {
+const CodeMirrorEditor = forwardRef<
+  CodeMirrorEditorHandle,
+  CodeMirrorEditorProps
+>((props, ref) => {
   const editorRef = useRef<MonacoEditor.IStandaloneCodeEditor | null>(null);
 
   useImperativeHandle(ref, () => ({
@@ -20,6 +23,7 @@ const CodeMirrorEditor = forwardRef<CodeMirrorEditorHandle, CodeMirrorEditorProp
   return (
     <Editor
       {...props}
+      defaultValue={props.language === "php" ? "<?php\n" : ""}
       onMount={(editor) => {
         editorRef.current = editor;
         if (props.onMount) {
@@ -30,6 +34,6 @@ const CodeMirrorEditor = forwardRef<CodeMirrorEditorHandle, CodeMirrorEditorProp
   );
 });
 
-CodeMirrorEditor.displayName = 'CodeMirrorEditor';
+CodeMirrorEditor.displayName = "CodeMirrorEditor";
 
 export default CodeMirrorEditor;

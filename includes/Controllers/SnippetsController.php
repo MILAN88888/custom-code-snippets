@@ -50,7 +50,7 @@ class SnippetsController {
 			$errors['title'] = esc_hmtl__( 'Title must be a string and less than 255 characters.', 'custom-code-snippets' );
 		}
 
-		$codesnippet = isset($params['codesnippet']) ? maybe_serialize(sanitize_text_field($params['codesnippet'])):'';
+		$codesnippet = isset($params['codesnippet']) ? $params['codesnippet']:'';
 		if (empty($codesnippet)) {
 			$errors['codesnippet'] = esc_html__('Code snippet is required.', 'custom-code-snippets');
 		} else if (!is_string($codesnippet)) {
