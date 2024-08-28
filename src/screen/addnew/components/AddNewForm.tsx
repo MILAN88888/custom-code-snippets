@@ -20,13 +20,15 @@ import CodeSnippetEditor from "./CodeMirrorEditor";
 import { AddNew, BackendErrors } from "./../../../types/index";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { addNewSnippet, getSnippets } from "./../../../api/api";
-import { unserialize } from "php-serialize";
+import { useNavigate } from "react-router-dom";
 
 interface AddNewFormProps {
   id?: string;
 }
 const AddNewForm: React.FC<AddNewFormProps> = ({ id }) => {
   const toast = useToast();
+  const navigate = useNavigate();
+
   const addNewSnippetMutation = useMutation({
     mutationFn: addNewSnippet,
     onSuccess: (res: any) => {
@@ -36,7 +38,12 @@ const AddNewForm: React.FC<AddNewFormProps> = ({ id }) => {
         duration: 3000,
         isClosable: true
       });
-      reset();
+
+      if (id) {
+        navigate(`/snippet/edit/${id}`);
+      } else {
+        reset();
+      }
     },
     onError: (error: any) => {
       if (error.errors) {
