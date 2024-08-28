@@ -51,6 +51,9 @@ class SnippetsController {
 		}
 
 		$codesnippet = isset($params['codesnippet']) ? $params['codesnippet']:'';
+		$codesnippet = preg_replace( '|^\s*<\?(php)?|', '', $codesnippet );
+		$codesnippet = preg_replace( '|\?>\s*$|', '', $codesnippet );
+
 		if (empty($codesnippet)) {
 			$errors['codesnippet'] = esc_html__('Code snippet is required.', 'custom-code-snippets');
 		} else if (!is_string($codesnippet)) {
@@ -124,6 +127,9 @@ class SnippetsController {
 
 		$res = $this->snippets->get_snippets($params);
 
+		if ( isset($res['results'][0]) && !empty($res['results'][0]) && 'PHP' === $res['results'][0]->lang) {
+			$res['results'][0]->codesnippet = '<?php'.$res['results'][0]->codesnippet;
+		}
 		return $res;
 	}
 	/**
