@@ -1,10 +1,13 @@
-import { Box, Heading, Stack, Text } from "@chakra-ui/react";
+import { Box, Button, Heading, Stack, Text } from "@chakra-ui/react";
 import { __ } from "@wordpress/i18n";
 import React from "react";
 import AddNewForm from "./components/AddNewForm";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { TiArrowBack } from "react-icons/ti";
 
 const AddNew: React.FC = () => {
+  const navigate = useNavigate();
+
   const { id } = useParams<{ id?: string }>();
   const editProps = id ? { id: id } : {};
   return (
@@ -23,16 +26,29 @@ const AddNew: React.FC = () => {
           gap="24px"
           direction="column"
         >
-          <Heading
-            fontWeight="600"
-            size="18px"
-            lineHeight="6px"
-            color="dark.500"
+          <Stack
+            direction="row"
+            gap="5px"
+            alignItems="center"
+            justifyContent="space-between"
           >
-            {id
-              ? __("Edit Custom Code Snippets", "custom-code-snippets")
-              : __("Add New Custom Code Snippets", "custom-code-snippets")}
-          </Heading>
+            <Heading
+              fontWeight="600"
+              size="18px"
+              lineHeight="6px"
+              color="dark.500"
+            >
+              {id
+                ? __("Edit Custom Code Snippets", "custom-code-snippets")
+                : __("Add New Custom Code Snippets", "custom-code-snippets")}
+            </Heading>
+            {id && (
+              <Button onClick={() => navigate("/")}>
+                <TiArrowBack style={{ fontSize: "24px" }} />
+              </Button>
+            )}
+          </Stack>
+
           <Text
             fontWeight="400"
             size="14px"
