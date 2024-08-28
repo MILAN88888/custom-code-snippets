@@ -88,7 +88,7 @@ class Migration {
         $sql = "CREATE TABLE IF NOT EXISTS {$this->prefix}ccsnpt_snippets (
             id BIGINT(20) NOT NULL AUTO_INCREMENT,
             title TINYTEXT NOT NULL,
-			type TINYTEXT NOT NULL DEFAULT 'PHP',
+			lang VARCHAR(25) NOT NULL DEFAULT 'PHP',
             description TEXT NOT NULL,
             codesnippet LONGTEXT NOT NULL,
             tags LONGTEXT NOT NULL,
