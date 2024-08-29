@@ -3,9 +3,6 @@
  * Custom Code Snippets Snippets class.
  *
  * @package  namespace CCSNPT\Controllers\Snippets
- *
- * @category Snippets  Class.
- * @author CCSNPT@Milan.
  */
 
 namespace CCSNPT\Models;
@@ -26,7 +23,7 @@ class Snippets {
 	public function save_snippets( $data ) {
 		global $wpdb;
 
-		if ( isset( $data['id'] ) && !empty( $data['id'] ) ) {
+		if ( isset( $data['id'] ) && ! empty( $data['id'] ) ) {
 			$id = $data['id'];
 			unset( $data['id'] );
 
@@ -53,53 +50,53 @@ class Snippets {
 	public function get_snippets( $params ) {
 		global $wpdb;
 
-		$sql = "SELECT * FROM {$wpdb->prefix}ccsnpt_snippets";
+		$sql       = "SELECT * FROM {$wpdb->prefix}ccsnpt_snippets";
 		$count_sql = "SELECT COUNT(*) FROM {$wpdb->prefix}ccsnpt_snippets";
-		if(isset($params['id']) && !empty($params['id'])) {
-			$sql .= $wpdb->prepare(' WHERE id = %d', $params['id']);
-			$results = $wpdb->get_results($sql);
+		if ( isset( $params['id'] ) && ! empty( $params['id'] ) ) {
+			$sql    .= $wpdb->prepare( ' WHERE id = %d', $params['id'] );
+			$results = $wpdb->get_results( $sql );
 
 			return array(
-				'results' => $results,
+				'results'     => $results,
 				'total_count' => 1,
 			);
-		}else {
+		} else {
 			$where_clause = array();
-			if(isset($params['searchByItem']) && !empty($params['searchByItem'])) {
-				$like_item ='%'.$params['searchByItem'].'%';
+			if ( isset( $params['searchByItem'] ) && ! empty( $params['searchByItem'] ) ) {
+				$like_item = '%' . $params['searchByItem'] . '%';
 
-				$where_clause[]= $wpdb->prepare(' `title`LIKE %s OR `description`LIKE %s OR `tags` LIKE %s', $like_item, $like_item, $like_item);
+				$where_clause[] = $wpdb->prepare( ' `title`LIKE %s OR `description`LIKE %s OR `tags` LIKE %s', $like_item, $like_item, $like_item );
 			}
 
-			if (isset($params['startDate']) && isset($params['endDate'])) {
-				$start_date = empty($params['startDate']) ? date('Y-m-d') : date('Y-m-d', strtotime($params['startDate']));
-				$end_date = empty($params['endDate']) ? date('Y-m-d') : date('Y-m-d', strtotime($params['endDate']));
-				$where_clause[] = $wpdb->prepare(' `updated_at` BETWEEN %s AND %s', $start_date, $end_date);
+			if ( isset( $params['startDate'] ) && isset( $params['endDate'] ) ) {
+				$start_date     = empty( $params['startDate'] ) ? date( 'Y-m-d' ) : date( 'Y-m-d', strtotime( $params['startDate'] ) );
+				$end_date       = empty( $params['endDate'] ) ? date( 'Y-m-d' ) : date( 'Y-m-d', strtotime( $params['endDate'] ) );
+				$where_clause[] = $wpdb->prepare( ' `updated_at` BETWEEN %s AND %s', $start_date, $end_date );
 			}
-			if(isset($params['status'])) {
-				$status = $params['status'];
-				$where_clause[] = $wpdb->prepare(' `active` = %s', $status);
-			}
-
-			if(!empty($where_clause)){
-				$where_sql = ' WHERE ' . implode(' AND ', $where_clause);
-       			$sql .= $where_sql;
-       			$count_sql .= $where_sql;
+			if ( isset( $params['status'] ) ) {
+				$status         = $params['status'];
+				$where_clause[] = $wpdb->prepare( ' `active` = %s', $status );
 			}
 
-			$total_count = $wpdb->get_var($count_sql);
+			if ( ! empty( $where_clause ) ) {
+				$where_sql  = ' WHERE ' . implode( ' AND ', $where_clause );
+				$sql       .= $where_sql;
+				$count_sql .= $where_sql;
+			}
+
+			$total_count = $wpdb->get_var( $count_sql );
 
 			if ( isset( $params['limit'] ) || isset( $params['offset'] ) ) {
-				$limit = isset( $params['limit'] ) ? intval( $params['limit'] ) : 18446744073709551615;
-				$offset    = isset( $params['offset'] ) ? intval( $params['offset'] ) : 0;
-				$sql    .= $wpdb->prepare( ' LIMIT %d, %d', ($offset-1)*$limit, $limit );
+				$limit  = isset( $params['limit'] ) ? intval( $params['limit'] ) : 18446744073709551615;
+				$offset = isset( $params['offset'] ) ? intval( $params['offset'] ) : 0;
+				$sql   .= $wpdb->prepare( ' LIMIT %d, %d', ( $offset - 1 ) * $limit, $limit );
 			}
 		}
 
-		$results = $wpdb->get_results($sql);
+		$results = $wpdb->get_results( $sql );
 
 		return array(
-			'results' => $results,
+			'results'     => $results,
 			'total_count' => $total_count,
 		);
 	}
@@ -109,10 +106,10 @@ class Snippets {
 	 * @param [array] $params The params.
 	 * @return boolean
 	 */
-	public function update_status($params) {
+	public function update_status( $params ) {
 		global $wpdb;
 
-		return $wpdb->update($wpdb->prefix.'ccsnpt_snippets',array('active'=>$params['active']),array('id'=>$params['id']),array('%s'), array('%d'));
+		return $wpdb->update( $wpdb->prefix . 'ccsnpt_snippets', array( 'active' => $params['active'] ), array( 'id' => $params['id'] ), array( '%s' ), array( '%d' ) );
 	}
 	/**
 	 * Delete the snippets.
@@ -120,15 +117,15 @@ class Snippets {
 	 * @param [array] $ids The ids.
 	 * @return boolean
 	 */
-	public function delete_snippets($ids) {
+	public function delete_snippets( $ids ) {
 		global $wpdb;
 
-		$ids_placeholders = implode(',', array_fill(0, count($ids), '%d'));
+		$ids_placeholders = implode( ',', array_fill( 0, count( $ids ), '%d' ) );
 
 		$sql = $wpdb->prepare(
 			"DELETE FROM {$wpdb->prefix}ccsnpt_snippets WHERE id IN ($ids_placeholders)",
 			$ids
 		);
-		return $wpdb->query($sql);
+		return $wpdb->query( $sql );
 	}
 }

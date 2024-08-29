@@ -58,7 +58,10 @@ add_action( 'plugin_loaded', array( 'CCSNPT\CCSNPT', 'get_instance' ) );
 /**
  * Register activation hook.
  */
-register_activation_hook(__FILE__, function() {
-    $migration = new Migration();
-    $migration->setup();
-});
+register_activation_hook(
+	__FILE__,
+	function () {
+		$migration = new Migration();
+		$migration->setup();
+	}
+);

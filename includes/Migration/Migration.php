@@ -4,8 +4,6 @@
  *
  * @class Migration
  * @package CCSNPT\Migration
- * @category Migration
- * @author CCSNPT@Milan
  */
 
 namespace CCSNPT\Migration;
@@ -17,75 +15,75 @@ namespace CCSNPT\Migration;
  */
 class Migration {
 
-    /**
-     * The name of the database connection to use.
-     *
-     * @var wpdb
-     */
-    protected $connection;
+	/**
+	 * The name of the database connection to use.
+	 *
+	 * @var wpdb
+	 */
+	protected $connection;
 
-    /**
-     * Database charset collation.
-     *
-     * @var string
-     */
-    protected $charset_collate;
+	/**
+	 * Database charset collation.
+	 *
+	 * @var string
+	 */
+	protected $charset_collate;
 
-    /**
-     * Table prefix.
-     *
-     * @var string
-     */
-    protected $prefix;
+	/**
+	 * Table prefix.
+	 *
+	 * @var string
+	 */
+	protected $prefix;
 
-    /**
-     * Constructor.
-     */
-    public function __construct() {
-        global $wpdb;
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		global $wpdb;
 
-        $this->connection      = $wpdb;
-        $this->prefix          = $wpdb->prefix;
-        $this->charset_collate = $this->get_collation();
-    }
+		$this->connection      = $wpdb;
+		$this->prefix          = $wpdb->prefix;
+		$this->charset_collate = $this->get_collation();
+	}
 
-    /**
-     * Get the migration connection name.
-     *
-     * @return wpdb
-     */
-    public function get_connection() {
-        return $this->connection;
-    }
+	/**
+	 * Get the migration connection name.
+	 *
+	 * @return wpdb
+	 */
+	public function get_connection() {
+		return $this->connection;
+	}
 
-    /**
-     * Get database collation.
-     *
-     * @return string
-     */
-    protected function get_collation() {
-        if ( ! $this->connection->has_cap( 'collation' ) ) {
-            return '';
-        }
+	/**
+	 * Get database collation.
+	 *
+	 * @return string
+	 */
+	protected function get_collation() {
+		if ( ! $this->connection->has_cap( 'collation' ) ) {
+			return '';
+		}
 
-        return $this->connection->get_charset_collate();
-    }
+		return $this->connection->get_charset_collate();
+	}
 
-    /**
-     * Set up the table to store the snippets.
-     *
-     * @since 1.0.0
-     *
-     * @return bool
-     */
-    public function setup() {
-        if ( ! function_exists( 'dbDelta' ) ) {
-            require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-        }
+	/**
+	 * Set up the table to store the snippets.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return bool
+	 */
+	public function setup() {
+		if ( ! function_exists( 'dbDelta' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+		}
 
-        $collation = $this->get_collation();
+		$collation = $this->get_collation();
 
-        $sql = "CREATE TABLE IF NOT EXISTS {$this->prefix}ccsnpt_snippets (
+		$sql = "CREATE TABLE IF NOT EXISTS {$this->prefix}ccsnpt_snippets (
             id BIGINT(20) NOT NULL AUTO_INCREMENT,
             title TINYTEXT NOT NULL,
 			lang VARCHAR(25) NOT NULL DEFAULT 'PHP',
@@ -102,8 +100,8 @@ class Migration {
             PRIMARY KEY (id)
         ) {$collation};";
 
-        dbDelta($sql);
+		dbDelta( $sql );
 
-        return true;
-    }
+		return true;
+	}
 }

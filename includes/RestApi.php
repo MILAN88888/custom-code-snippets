@@ -3,9 +3,6 @@
  * Custom Code Snippets RestApi class.
  *
  * @package  namespace CCSNPT\RestApi
- *
- * @category RestApi  Class.
- * @author CCSNPT@Milan.
  */
 
 namespace CCSNPT;
@@ -48,9 +45,9 @@ class RestApi {
 	public static function register_rest_routes() {
 		foreach ( self::get_route_classes() as $class_name ) {
 
-				if ( class_exists( $class_name ) ) {
-					$object = new $class_name();
-					$object->register_routes();
+			if ( class_exists( $class_name ) ) {
+				$object = new $class_name();
+				$object->register_routes();
 			}
 		}
 	}
@@ -64,8 +61,11 @@ class RestApi {
 	 * @return array
 	 */
 	protected static function get_route_classes() {
-		return apply_filters('ccsnpt_rest_api_get_rest_namespaces',array(
-			'snippets'     => SnippetsRoutes::class,
-		));
+		return apply_filters(
+			'ccsnpt_rest_api_get_rest_namespaces',
+			array(
+				'snippets' => SnippetsRoutes::class,
+			)
+		);
 	}
 }

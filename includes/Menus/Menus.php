@@ -4,8 +4,6 @@
  *
  * @since 1.0.0
  * @package CCSNPT\Menus
- * @category Menu
- * @author CCSNPT@Milan
  */
 
 namespace CCSNPT\Menus;
@@ -30,7 +28,7 @@ class Menus {
 	 * Add menu items.
 	 */
 	public function add_menu() {
-			$svg = '<svg enable-background="new 0 0 32 32" height="32px" id="svg2" version="1.1" viewBox="0 0 32 32" width="32px" xmlns="http://www.w3.org/2000/svg">
+			$svg    = '<svg enable-background="new 0 0 32 32" height="32px" id="svg2" version="1.1" viewBox="0 0 32 32" width="32px" xmlns="http://www.w3.org/2000/svg">
   <g id="sourcecode">
     <polygon points="22,22 22,26 32,16 22,6 22,10 28,16" fill="#FF0000"/>
     <polygon points="10,22 10,26 0,16 10,6 10,10 4,16" fill="#0000FF"/>
@@ -49,7 +47,7 @@ class Menus {
 			return;
 		}
 		if ( ! empty( $_GET['page'] ) && 'custom-code-snippets' === $_GET['page'] ) { //phpcs:ignore WordPress.Security.NonceVerification
-			wp_enqueue_style('ccsnpt-style', Helper::plugin_url() . '/build/styles.css', array(), CCSNPT_VERSION, 'all');
+			wp_enqueue_style( 'ccsnpt-style', Helper::plugin_url() . '/build/styles.css', array(), CCSNPT_VERSION, 'all' );
 			wp_enqueue_script( 'ccsnpt-script', Helper::plugin_url() . '/build/index.js', array( 'wp-element', 'react', 'react-dom', 'wp-api-fetch', 'wp-i18n', 'wp-blocks' ), CCSNPT_VERSION, true );
 
 			wp_localize_script(

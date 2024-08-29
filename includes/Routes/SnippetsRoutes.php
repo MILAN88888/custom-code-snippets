@@ -3,9 +3,6 @@
  * Custom Code Snippets SnippetsRoutes class.
  *
  * @package  namespace CCSNPT\Routes\SnippetsRoutes
- *
- * @category SnippetsRoutes  Class.
- * @author CCSNPT@Milan.
  */
 
 namespace CCSNPT\Routes;
@@ -108,5 +105,4 @@ class SnippetsRoutes {
 
 		return true;
 	}
-
 }

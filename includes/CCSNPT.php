@@ -5,21 +5,19 @@
  * @since 1.0.0
  *
  * @package CCSNPT
- * @category Main Class.
- * @author CCSNPT@Milan.
  */
 
- namespace CCSNPT;
+namespace CCSNPT;
 
- use CCSNPT\Menus\Menus as Menus;
- use CCSNPT\Migration\Migration;
- use CCSNPT\RestApi;
+use CCSNPT\Menus\Menus;
+use CCSNPT\Migration\Migration;
+use CCSNPT\RestApi;
 
- /**
-  * CSSNTP setup.
-  *
-  * @since 1.0.0
-  */
+/**
+ * CSSNTP setup.
+ *
+ * @since 1.0.0
+ */
 class CCSNPT {
 	/**
 	 * The single instance of the class.
