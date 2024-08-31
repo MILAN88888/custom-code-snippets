@@ -6,7 +6,7 @@
  * @package CCSNPT\Menus
  */
 
-namespace CCSNPT\Menus;
+namespace CCSNPT\Controllers\Admin;
 
 use CCSNPT\Helper;
 
@@ -15,7 +15,7 @@ use CCSNPT\Helper;
  *
  * @since 1.0.0
  */
-class Menus {
+class MenusController {
 	/**
 	 * Constructor.
 	 *

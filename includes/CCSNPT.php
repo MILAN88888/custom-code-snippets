@@ -9,7 +9,7 @@
 
 namespace CCSNPT;
 
-use CCSNPT\Menus\Menus;
+use CCSNPT\Controllers\Admin\MenusController;
 use CCSNPT\Migration\Migration;
 use CCSNPT\RestApi;
 
@@ -98,7 +98,7 @@ class CCSNPT {
 	 * @return void
 	 */
 	private function includes() {
-			new Menus();
+			new MenusController();
 			$rest_api = new RestApi();
 			$rest_api->init();
 	}
