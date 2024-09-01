@@ -77,7 +77,17 @@ class Snippets {
 				$status         = $params['status'];
 				$where_clause[] = $wpdb->prepare( ' `active` = %s', $status );
 			}
+			if ( isset( $params['scope'] ) ) {
+				if ( count( $params['scope'] ) > 0 ) {
+					foreach ( $params['scope'] as $scope ) {
+						$scope_where[] = $wpdb->prepare( ' `scope` = %s', $scope );
+					}
+					$where_clause[] = implode( ' OR ', $scope_where );
 
+				} else {
+					$where_clause[] = $wpdb->prepare( ' `scope` = %s', $params['scope'] );
+				}
+			}
 			if ( ! empty( $where_clause ) ) {
 				$where_sql  = ' WHERE ' . implode( ' AND ', $where_clause );
 				$sql       .= $where_sql;

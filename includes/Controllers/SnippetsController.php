@@ -178,4 +178,14 @@ class SnippetsController {
 
 		return $this->snippets->delete_snippets( $params );
 	}
+	/**
+	 * Get active snippets.
+	 *
+	 * @param [array] $params The params.
+	 *
+	 * @return boolean|array
+	 */
+	public function get_active_snippets( $params ) {
+		return $this->snippets->get_snippets( $params );
+	}
 }
