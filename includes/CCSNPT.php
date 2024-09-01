@@ -10,6 +10,7 @@
 namespace CCSNPT;
 
 use CCSNPT\Controllers\Admin\MenusController;
+use CCSNPT\Controllers\InitController;
 use CCSNPT\Migration\Migration;
 use CCSNPT\RestApi;
 
@@ -101,5 +102,6 @@ class CCSNPT {
 			new MenusController();
 			$rest_api = new RestApi();
 			$rest_api->init();
+			new InitController();
 	}
 }
