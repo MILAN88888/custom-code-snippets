@@ -100,8 +100,8 @@ class CCSNPT {
 	 */
 	private function includes() {
 			new MenusController();
+			new InitController();
 			$rest_api = new RestApi();
 			$rest_api->init();
-			new InitController();
 	}
 }
