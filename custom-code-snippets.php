@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Custom Code Snippets
  * Plugin URI: https://wordpress.org/plugins/custom-code-snippets
- * Description: Effortlessly user can add the block of code to code file.
+ * Description: Easily manage and execute custom code snippets in WordPress with the Custom Code Snippets plugin.
  * Version: 1.0.0
  * Author: CCSNPT@Milan
  * Author URI: https://milanc.com.np/
