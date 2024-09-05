@@ -69,8 +69,8 @@ class Snippets {
 			}
 
 			if ( isset( $params['startDate'] ) && isset( $params['endDate'] ) ) {
-				$start_date     = empty( $params['startDate'] ) ? date( 'Y-m-d' ) : date( 'Y-m-d', strtotime( $params['startDate'] ) );
-				$end_date       = empty( $params['endDate'] ) ? date( 'Y-m-d' ) : date( 'Y-m-d', strtotime( $params['endDate'] ) );
+				$start_date     = empty( $params['startDate'] ) ? gmdate( 'Y-m-d' ) : gmdate( 'Y-m-d', strtotime( $params['startDate'] ) );
+				$end_date       = empty( $params['endDate'] ) ? gmdate( 'Y-m-d' ) : gmdate( 'Y-m-d', strtotime( $params['endDate'] ) );
 				$where_clause[] = $wpdb->prepare( ' `updated_at` BETWEEN %s AND %s', $start_date, $end_date );
 			}
 			if ( isset( $params['status'] ) ) {
