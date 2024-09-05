@@ -134,7 +134,7 @@ class Snippets {
 
 		$sql = $wpdb->prepare(
 			"DELETE FROM {$wpdb->prefix}ccsnpt_snippets WHERE id IN ($ids_placeholders)",
-			$ids
+			...$ids
 		);
 		return $wpdb->query( $sql );
 	}
