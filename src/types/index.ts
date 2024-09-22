@@ -22,7 +22,7 @@ export type BackendErrors = {
   };
 
   export type SnippetParams = {
-    id?: number;
+    id?: number | string;
     searchByItem?: string;
     startDate?: string;
     endDate?: string;

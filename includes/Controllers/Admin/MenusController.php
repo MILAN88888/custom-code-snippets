@@ -47,8 +47,8 @@ class MenusController {
 			return;
 		}
 		if ( ! empty( $_GET['page'] ) && 'custom-code-snippets' === $_GET['page'] ) { //phpcs:ignore WordPress.Security.NonceVerification
-			wp_enqueue_style( 'ccsnpt-style', Helper::plugin_url() . '/build/styles.css', array(), CCSNPT_VERSION, 'all' );
-			wp_enqueue_script( 'ccsnpt-script', Helper::plugin_url() . '/build/index.js', array( 'wp-element', 'react', 'react-dom', 'wp-api-fetch', 'wp-i18n', 'wp-blocks' ), CCSNPT_VERSION, true );
+			wp_enqueue_style( 'ccsnpt-style', Helper::plugin_url() . '/dist/main.css', array(), CCSNPT_VERSION, 'all' );
+			wp_enqueue_script( 'ccsnpt-script', Helper::plugin_url() . '/dist/main.js', array( 'wp-element', 'react', 'react-dom', 'wp-api-fetch', 'wp-i18n', 'wp-blocks' ), CCSNPT_VERSION, true );
 
 			wp_localize_script(
 				'ccsnpt-script',

@@ -188,7 +188,9 @@ const SnippetTable: React.FC = () => {
   const paginationProps = {
     params,
     setParams,
-    totalPages: data ? Math.ceil(Number(data.total_count) / params.limit) : 10
+    totalPages: data
+      ? Math.ceil(Number(data.total_count) / (params.limit ?? 10))
+      : 10
   };
 
   return (
@@ -251,7 +253,7 @@ const SnippetTable: React.FC = () => {
               </Tr>
             </Thead>
             <Tbody>
-              {data.results && data.results.length > 0 ? (
+              {data && data.results && data.results.length > 0 ? (
                 data.results.map((snippet: any, index: number) => (
                   <Tr key={index}>
                     <Td width="50px">

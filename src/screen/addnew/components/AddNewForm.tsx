@@ -23,7 +23,7 @@ import { addNewSnippet, getSnippets } from "./../../../api/api";
 import { useNavigate } from "react-router-dom";
 
 interface AddNewFormProps {
-  id?: string;
+  id?: string | number;
 }
 const AddNewForm: React.FC<AddNewFormProps> = ({ id }) => {
   const toast = useToast();
@@ -92,8 +92,8 @@ const AddNewForm: React.FC<AddNewFormProps> = ({ id }) => {
   useEffect(() => {
     if (data) {
       const snippet = data.results[0];
-      Object.keys(snippet).forEach((key) => {
-        setValue(key as keyof AddNew, snippet[key]);
+      Object.keys(snippet).forEach((key: any) => {
+        setValue(key as keyof AddNew, snippet[key as keyof AddNew]);
       });
     }
   }, [data, setValue]);

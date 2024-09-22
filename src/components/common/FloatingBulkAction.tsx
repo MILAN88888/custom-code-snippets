@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Button,
   ButtonGroup,
@@ -83,7 +84,7 @@ const FloatingBulkAction: React.FC<BulkActionProps> = (props) => {
                     colorScheme={colorScheme}
                     borderRadius="md"
                     size="xs"
-                    leftIcon={icon || undefined}
+                    leftIcon={icon}
                     isLoading={isLoading}
                   >
                     {label}

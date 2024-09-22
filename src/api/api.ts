@@ -26,7 +26,9 @@ export const getSnippets = async (
     headers: {
       "X-WP-Nonce": ccsnptScriptData.ccsnptRestApiNonce
     }
-  }).then((res) => res);
+  }).then((res) => {
+    return res as GetSnippetsResponse;
+  });
 };
 
 export const updateStatusSnippets = async (data: any) => {

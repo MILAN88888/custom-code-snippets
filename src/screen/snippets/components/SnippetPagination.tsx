@@ -5,7 +5,7 @@ import { SnippetPagiProps } from "./../../../types/index";
 import "react-responsive-pagination/themes/classic.css";
 import { __ } from "@wordpress/i18n";
 import { useState } from "react";
-
+import React from "react";
 interface perPage {
   value?: number | undefined;
   label?: string;
@@ -49,7 +49,7 @@ const SnippetPagination: React.FC<SnippetPagiProps> = ({
         </Stack>
       </Stack>
       <ResponsivePaginationComponent
-        current={params.offset}
+        current={params.offset ?? 1}
         total={totalPages}
         onPageChange={(page) => setParams({ ...params, offset: page })}
       />
