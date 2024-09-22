@@ -1,66 +1,107 @@
-const path = require("path");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
+const DependencyExtractionWebpackPlugin = require("@wordpress/dependency-extraction-webpack-plugin");
+const BundleAnalyzerPlugin =
+  require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const MiniCSSExtractPlugin = require("mini-css-extract-plugin");
+const ForkTsCheckerPlugin = require("fork-ts-checker-webpack-plugin");
 
-module.exports = {
-  entry: "./src/index.tsx",
-  output: {
-    path: path.resolve(__dirname, "build"),
-    filename: "index.js",
-    publicPath: "/build/"
-  },
-  mode: "development",
-  module: {
-    rules: [
-      {
-        test: /\.(ts|tsx)$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "ts-loader",
-          options: {
-            transpileOnly: true
-          }
-        }
-      },
-      {
-        test: /\.(bmp|gif|jpe?g|png|svg|webp)$/,
-        use: [
-          {
-            loader: "url-loader",
+const WebpackBar = require("webpackbar");
+const path = require("path");
+
+module.exports = (env, argv) => {
+  const isDevelopment = argv.mode === "development";
+
+  return {
+    entry: {
+      main: path.resolve(process.cwd(), "src/index.tsx")
+    },
+    output: {
+      path: path.resolve(process.cwd(), "dist"),
+      filename: `[name].js`,
+      libraryTarget: "this",
+      publicPath: "http://localhost:3000/dist"
+    },
+    module: {
+      rules: [
+        {
+          test: /\.(js|jsx|ts|tsx)$/,
+          exclude: /node_modules/,
+          use: {
+            loader: "babel-loader",
             options: {
-              limit: 15000,
-              name: "static/media/[name].[hash:8].[ext]",
-              fallback: "file-loader"
+              plugins: isDevelopment
+                ? [require.resolve("react-refresh/babel")]
+                : []
             }
           }
-        ]
-      },
-      {
-        test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, "css-loader"]
-      },
-      {
-        test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
+        },
+        {
+          test: /\.(png|svg|jpg|jpeg|gif|webp)$/i,
+          loader: "file-loader"
+        },
+        {
+          test: /\.css$/i,
+          use: [
+            isDevelopment ? "style-loader" : MiniCSSExtractPlugin.loader,
+            "css-loader"
+          ]
+        },
+        {
+          test: /\.scss$/i,
+          use: [
+            isDevelopment ? "style-loader" : MiniCSSExtractPlugin.loader,
+            "css-loader",
+            "sass-loader"
+          ]
+        },
+        {
+          test: /\.(eot|ttf|woff|woff2)$/i,
+          loader: "file-loader"
+        },
+        {
+          test: [],
+          loader: require.resolve("url-loader"),
           options: {
-            presets: ["@babel/preset-env", "@babel/preset-react"]
+            limit: 150000,
+            name: "static/media/[name].[hash:8].[ext]"
           }
         }
+      ]
+    },
+    optimization: {
+      minimize: !isDevelopment
+    },
+    plugins: [
+      new DependencyExtractionWebpackPlugin(),
+      new ForkTsCheckerPlugin({
+        async: false
+      }),
+      isDevelopment &&
+        new ReactRefreshWebpackPlugin({
+          overlay: false
+        }),
+      !isDevelopment &&
+        new MiniCSSExtractPlugin({
+          filename: "[name].css"
+        }),
+      new BundleAnalyzerPlugin({
+        analyzerMode: isDevelopment ? "server" : "static",
+        openAnalyzer: false
+      }),
+      new WebpackBar()
+    ].filter(Boolean),
+    resolve: {
+      extensions: [".js", ".jsx", ".ts", ".tsx"]
+    },
+    devtool: isDevelopment ? "source-map" : false,
+    devServer: {
+      headers: { "Access-Control-Allow-Origin": "*" },
+      allowedHosts: "all",
+      host: "localhost",
+      port: 3000,
+      client: {
+        overlay: false
       }
-    ]
-  },
-  resolve: {
-    extensions: [".ts", ".tsx", ".js", ".jsx"]
-  },
-  devServer: {
-    contentBase: path.join(__dirname, "build"),
-    compress: true,
-    port: 9000
-  },
-  plugins: [
-    new MiniCssExtractPlugin({
-      filename: "styles.css"
-    })
-  ]
+    }
+  };
 };
