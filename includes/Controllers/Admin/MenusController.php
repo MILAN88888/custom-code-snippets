@@ -9,6 +9,7 @@
 namespace CCSNPT\Controllers\Admin;
 
 use CCSNPT\Helper;
+use CCSNPT\Traits\Singleton;
 
 /**
  * Menus class.
@@ -16,6 +17,9 @@ use CCSNPT\Helper;
  * @since 1.0.0
  */
 class MenusController {
+
+	use Singleton;
+
 	/**
 	 * Constructor.
 	 *

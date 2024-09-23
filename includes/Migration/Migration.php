@@ -8,12 +8,16 @@
 
 namespace CCSNPT\Migration;
 
+use CCSNPT\Traits\Singleton;
+
 /**
  * Migration class.
  *
  * @since 1.0.0
  */
 class Migration {
+
+	use Singleton;
 
 	/**
 	 * The name of the database connection to use.
@@ -45,6 +49,7 @@ class Migration {
 		$this->connection      = $wpdb;
 		$this->prefix          = $wpdb->prefix;
 		$this->charset_collate = $this->get_collation();
+		$this->setup();
 	}
 
 	/**

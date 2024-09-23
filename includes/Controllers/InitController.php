@@ -9,12 +9,16 @@
 
 namespace CCSNPT\Controllers;
 
+use CCSNPT\Traits\Singleton;
+
 /**
  * Initial Controller class.
  *
  * @since 1.0.0
  */
 class InitController {
+
+	use Singleton;
 
 	/**
 	 * Constructor.

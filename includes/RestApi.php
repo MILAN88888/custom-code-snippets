@@ -8,6 +8,7 @@
 namespace CCSNPT;
 
 use CCSNPT\Routes\SnippetsRoutes;
+use CCSNPT\Traits\Singleton;
 
 /**
  * RestApi class.
@@ -15,6 +16,9 @@ use CCSNPT\Routes\SnippetsRoutes;
  * @since 1.0.0
  */
 class RestApi {
+
+	use Singleton;
+
 	/**
 	 * Rest api endpoints.
 	 *
@@ -31,7 +35,7 @@ class RestApi {
 	 *
 	 * @return void
 	 */
-	public static function init() {
+	public function __construct() {
 		add_action( 'rest_api_init', array( __CLASS__, 'register_rest_routes' ) );
 	}
 

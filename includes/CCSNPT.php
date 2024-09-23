@@ -13,21 +13,17 @@ use CCSNPT\Controllers\Admin\MenusController;
 use CCSNPT\Controllers\InitController;
 use CCSNPT\Migration\Migration;
 use CCSNPT\RestApi;
+use CCSNPT\Traits\Singleton;
 
 /**
  * CSSNTP setup.
  *
  * @since 1.0.0
  */
-class CCSNPT {
-	/**
-	 * The single instance of the class.
-	 *
-	 * @var Object
-	 *
-	 * @since 1.0.0
-	 */
-	protected static $instance = null;
+final class CCSNPT {
+
+	use Singleton;
+
 	/**
 	 * Constructor.
 	 *
@@ -38,22 +34,6 @@ class CCSNPT {
 		add_filter( 'plugin_row_meta', array( $this, 'plugin_row_meta' ), 20, 2 );
 		$this->includes();
 	}
-
-	/**
-	 * Main plugin class instance.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return object Main instance of the class.
-	 */
-	public static function get_instance() {
-		if ( is_null( self::$instance ) ) {
-			self::$instance = new self();
-		}
-
-		return self::$instance;
-	}
-
 
 	/**
 	 * Load Localization files.
@@ -99,9 +79,8 @@ class CCSNPT {
 	 * @return void
 	 */
 	private function includes() {
-			new MenusController();
-			new InitController();
-			$rest_api = new RestApi();
-			$rest_api->init();
+			MenusController::init();
+			InitController::init();
+			RestApi::init();
 	}
 }

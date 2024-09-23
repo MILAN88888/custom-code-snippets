@@ -53,7 +53,7 @@ if ( ! defined( 'CCSNPT_URL' ) ) {
 /**
  * Initialization of CCSNPT.
  */
-add_action( 'plugin_loaded', array( 'CCSNPT\CCSNPT', 'get_instance' ) );
+add_action( 'plugin_loaded', array( 'CCSNPT\CCSNPT', 'init' ) );
 
 /**
  * Register activation hook.
@@ -61,7 +61,6 @@ add_action( 'plugin_loaded', array( 'CCSNPT\CCSNPT', 'get_instance' ) );
 register_activation_hook(
 	__FILE__,
 	function () {
-		$migration = new Migration();
-		$migration->setup();
+		Migration::init();
 	}
 );
