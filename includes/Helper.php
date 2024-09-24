@@ -52,4 +52,26 @@ class Helper {
 
 		return $result;
 	}
+
+	/**
+	 * Return development.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return boolean
+	 */
+	public static function is_development() {
+		return defined( 'CCSNPT_DEVELOPMENT' ) && CCSNPT_DEVELOPMENT;
+	}
+
+	/**
+	 * Return Production.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return boolean
+	 */
+	public static function is_production() {
+		return ! defined( 'CCSNPT_DEVELOPMENT' ) || ! CCSNPT_DEVELOPMENT;
+	}
 }

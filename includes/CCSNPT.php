@@ -9,6 +9,7 @@
 
 namespace CCSNPT;
 
+use CCSNPT\Controllers\Admin\ScriptStyleController;
 use CCSNPT\Controllers\Admin\MenusController;
 use CCSNPT\Controllers\InitController;
 use CCSNPT\Migration\Migration;
@@ -79,8 +80,9 @@ final class CCSNPT {
 	 * @return void
 	 */
 	private function includes() {
-			MenusController::init();
-			InitController::init();
-			RestApi::init();
+		MenusController::init();
+		ScriptStyleController::init();
+		InitController::init();
+		RestApi::init();
 	}
 }
